@@ -1,0 +1,28 @@
+.background {
+  background-color: #282c34;
+}
+
+.top-container,
+.bottom-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+.top-container {
+  height: 75vh;
+}
+
+.bottom-container {
+  height: 25vh;
+}
+
+.top-left-selection,
+.top-right-selection,
+.bottom-left-selection,
+.bottom-right-selection {
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  color: #d2d5da;
+  font-size: 64px;
+  border: 1px solid white;
+}

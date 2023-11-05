@@ -12,7 +12,7 @@ const HeaderClass = styled.header({
   alignItems: "center",
   textAlign: "center",
   justifyContent: "space-between",
-  fontSize: "calc(5px + 2vmin)",
+  fontSize: "20px",
   color: textGray,
   padding: "0 20px",
 });
