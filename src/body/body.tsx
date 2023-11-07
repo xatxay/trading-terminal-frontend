@@ -1,3 +1,4 @@
+import AccountSummary from "../accountSummary/accountSummary";
 import "../body/bodyStyle.css";
 
 function TopLeft() {
@@ -13,7 +14,11 @@ function BottomLeft() {
 }
 
 function BottomRight() {
-  return <div className="bottom-right-selection">section 4</div>;
+  return (
+    <div className="bottom-right-selection">
+      <AccountSummary />
+    </div>
+  );
 }
 
 function Body() {

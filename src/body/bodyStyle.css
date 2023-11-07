@@ -15,6 +15,10 @@
   height: 25vh;
 }
 
+.bottom-right-selection {
+  font-size: 18px;
+}
+
 .top-left-selection,
 .top-right-selection,
 .bottom-left-selection,
@@ -23,6 +27,23 @@
   justify-content: center;
   align-items: center;
   color: #d2d5da;
-  font-size: 64px;
   border: 1px solid white;
+}
+
+.account-summary ul {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.account-summary li {
+  padding: 0.5em 0;
+}
+
+.label-color {
+  color: #cccccc84;
+}
+
+.value-color {
+  color: #fff;
 }
