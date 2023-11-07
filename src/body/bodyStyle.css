@@ -37,7 +37,10 @@
 }
 
 .account-summary li {
-  padding: 0.5em 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5em 1em;
 }
 
 .label-color {
@@ -46,4 +49,5 @@
 
 .value-color {
   color: #fff;
+  margin-left: auto;
 }

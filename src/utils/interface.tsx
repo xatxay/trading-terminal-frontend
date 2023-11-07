@@ -4,3 +4,7 @@ export interface AccountSummaryInterface {
   totalAvailableBalance: number;
   totalPerpUPL: number;
 }
+
+export interface ButtonProps {
+  primary?: boolean;
+}

@@ -1,14 +1,14 @@
-import logo from "./logo.png";
-import { Logo, HeaderClass, ToggleContainer } from "./headerStyles";
+import { Button, HeaderClass, ToggleContainer } from "./headerStyles";
 import SwitchToggle from "./modeSwitch";
 
 function Header() {
   return (
     <HeaderClass>
       <p>Irregular Trading Terminal </p>
-      <Logo src={logo} />
+      <Button primary>Start</Button>
+      <Button>Stop</Button>
       <ToggleContainer>
-        <span>Auto Mode:</span>
+        <span>Manual Mode:</span>
         <SwitchToggle />
       </ToggleContainer>
     </HeaderClass>
