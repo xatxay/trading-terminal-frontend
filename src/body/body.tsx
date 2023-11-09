@@ -1,37 +1,42 @@
 import AccountSummary from "../accountSummary/accountSummary";
 import "../body/bodyStyle.css";
+import React from "react";
+import { ContainerProp } from "../utils/interface";
+import NewsHeadline from "../news/news";
+import { TradeTable } from "../openPosition/openPosition";
 
-function TopLeft() {
-  return <div className="top-left-selection">section 1</div>;
+function LeftContainer({ children }: ContainerProp) {
+  return <div className="left-container">{children}</div>;
 }
 
-function TopRight() {
-  return <div className="top-right-selection">section 2</div>;
-}
-
-function BottomLeft() {
-  return <div className="bottom-left-selection">section 3</div>;
+function RightContainer({ children }: ContainerProp) {
+  return <div className="right-container">{children}</div>;
 }
 
 function BottomRight() {
   return (
-    <div className="bottom-right-selection">
+    <div className="bottom-right-container">
       <AccountSummary />
     </div>
   );
 }
 
-function Body() {
+function TopRight({ children }: any) {
+  return <div className="top-right-container"> {children}</div>;
+}
+
+function Body({ children }: any) {
   return (
-    <div className="background">
-      <div className="top-container">
-        <TopLeft />
-        <TopRight />
-      </div>
-      <div className="bottom-container">
-        <BottomLeft />
+    <div className="container">
+      <LeftContainer>
+        <NewsHeadline />
+      </LeftContainer>
+      <RightContainer>
+        <TopRight>
+          <TradeTable>hello</TradeTable>
+        </TopRight>
         <BottomRight />
-      </div>
+      </RightContainer>
     </div>
   );
 }

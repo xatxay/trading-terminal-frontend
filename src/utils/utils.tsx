@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Positions } from "./interface";
 
 const useFetch = <T,>(
   url: string
@@ -26,7 +27,7 @@ const useFetch = <T,>(
       }
     };
     fetchData();
-    const intervalId = setInterval(fetchData, 2000);
+    const intervalId = setInterval(fetchData, 2000000);
 
     return () => {
       isMounted = false;
@@ -36,4 +37,8 @@ const useFetch = <T,>(
   return { data, error };
 };
 
-export { useFetch };
+const useGetPosition = () => {
+  return useFetch<Positions[]>("http://localhost:5000/positions");
+};
+
+export { useFetch, useGetPosition };

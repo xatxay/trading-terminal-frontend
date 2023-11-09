@@ -5,8 +5,10 @@ function Header() {
   return (
     <HeaderClass>
       <p>Irregular Trading Terminal </p>
-      <Button primary>Start</Button>
-      <Button>Stop</Button>
+      <Button primary onClick={() => alert("start")}>
+        Start
+      </Button>
+      <Button onClick={() => alert("stop")}>Stop</Button>
       <ToggleContainer>
         <span>Manual Mode:</span>
         <SwitchToggle />
