@@ -11,7 +11,7 @@ const Row = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 10px 0;
-  border-bottom: 1px solid white;
+  border-bottom: 1px solid rgb(221, 211, 211);
   &:last-child {
     border-bottom: none;
   }

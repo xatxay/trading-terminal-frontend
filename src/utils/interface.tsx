@@ -26,3 +26,7 @@ export interface Positions {
   cumRealisedPnl: string;
   side: string;
 }
+
+export interface MessageWebsocket {
+  data: any;
+}
