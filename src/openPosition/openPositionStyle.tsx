@@ -33,7 +33,7 @@ const Button = styled.button`
   font-weight: bold;
   cursor: pointer;
   &:hover {
-    background-color: aquamarine;
+    background-color: #ffae42;
   }
 `;
 
