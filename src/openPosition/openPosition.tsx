@@ -35,6 +35,7 @@ const TradeTable: React.FC<any> = () => {
   console.log("positions: ", positions);
   return (
     <Table>
+      <TradeRowHeader />
       {positions.map((pos) => {
         return <TradeRow key={pos.positionValue} trade={pos} />;
       })}
@@ -51,19 +52,72 @@ const TradeRow: React.FC<{ trade: Positions }> = ({ trade }) => {
     uPnl: Number(trade.unrealisedPnl).toFixed(2),
     realizedPnl: Number(trade.cumRealisedPnl).toFixed(2),
   };
+  const sideColor = trade.side === "Buy" ? "green" : "red";
+  const uPnlColor = Number(trade.unrealisedPnl) > 0 ? "green" : "red";
+  const rPnlColor = Number(trade.cumRealisedPnl) > 0 ? "green" : "red";
+  const textColor = "white";
   return (
     <Row>
-      <Cell width={1}>{trade.side}</Cell>
-      <Cell width={1}>{trade.symbol}</Cell>
-      <Cell width={1}>{trade.leverage}</Cell>
-      <Cell width={1}>{tradeFormat.positionSize}</Cell>
-      <Cell width={1}>{tradeFormat.entry}</Cell>
-      <Cell width={1}>{tradeFormat.marketPrice}</Cell>
-      <Cell width={1}>x{tradeFormat.liqPrice}</Cell>
-      <Cell width={1}>{tradeFormat.uPnl}</Cell>
-      <Cell width={1}>{tradeFormat.realizedPnl}</Cell>
+      <Cell width={1} color={sideColor}>
+        {trade.symbol}
+      </Cell>
+      <Cell width={1} color={textColor}>
+        {trade.leverage}X
+      </Cell>
+      <Cell width={1} color={textColor}>
+        {tradeFormat.positionSize}
+      </Cell>
+      <Cell width={1} color={textColor}>
+        {tradeFormat.entry}
+      </Cell>
+      <Cell width={1} color={textColor}>
+        {tradeFormat.marketPrice}
+      </Cell>
+      <Cell width={1} color={textColor}>
+        {tradeFormat.liqPrice}
+      </Cell>
+      <Cell width={1} color={uPnlColor}>
+        {tradeFormat.uPnl}
+      </Cell>
+      <Cell width={1} color={rPnlColor}>
+        {tradeFormat.realizedPnl}
+      </Cell>
       <Cell width={1}>
         <Button>Close</Button>
+      </Cell>
+    </Row>
+  );
+};
+
+const TradeRowHeader = () => {
+  return (
+    <Row>
+      <Cell width={1} primary>
+        Ticker
+      </Cell>
+      <Cell width={1} primary>
+        Leverage
+      </Cell>
+      <Cell width={1} primary>
+        Size
+      </Cell>
+      <Cell width={1} primary>
+        Entry
+      </Cell>
+      <Cell width={1} primary>
+        Price
+      </Cell>
+      <Cell width={1} primary>
+        Liq Price
+      </Cell>
+      <Cell width={1} primary>
+        UnPNL
+      </Cell>
+      <Cell width={1} primary>
+        RPNL
+      </Cell>
+      <Cell width={1} primary>
+        Close All
       </Cell>
     </Row>
   );

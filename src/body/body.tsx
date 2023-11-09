@@ -33,7 +33,7 @@ function Body({ children }: any) {
       </LeftContainer>
       <RightContainer>
         <TopRight>
-          <TradeTable>hello</TradeTable>
+          <TradeTable />
         </TopRight>
         <BottomRight />
       </RightContainer>

@@ -7,6 +7,7 @@
 .left-container {
   flex: 1;
   border: 1px solid white;
+  overflow: auto;
 }
 
 .right-container {
@@ -19,6 +20,7 @@
 .top-right-container {
   height: 75vh;
   border-bottom: 1px solid white;
+  overflow: auto;
 }
 
 .bottom-right-container {
@@ -49,6 +51,6 @@
   margin-left: auto;
 }
 
-.test {
-  padding: auto;
-}
+/* .test {
+  font-weight: ;
+} */

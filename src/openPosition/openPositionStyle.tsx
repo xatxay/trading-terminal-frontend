@@ -1,8 +1,7 @@
 import styled from "@emotion/styled/macro";
 
 const Table = styled.div`
-  background-color: white;
-  color: black;
+  color: #cccccc84;
   padding: auto;
   border-radius: 10px;
 `;
@@ -10,24 +9,28 @@ const Table = styled.div`
 const Row = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
   padding: 10px 0;
-  border-bottom: 1px solid #045fc8;
+  border-bottom: 1px solid white;
   &:last-child {
     border-bottom: none;
   }
 `;
 
-const Cell = styled.div<{ width: number }>`
+const Cell = styled.div<{ width: number; color?: string; primary?: boolean }>`
   flex: ${(props) => props.width};
   text-align: center;
+  color: ${(props) => props.color || "inherit"};
+  font-weight: ${(props) => (props.primary ? "bold" : "normal")};
 `;
 
 const Button = styled.button`
-  background-color: bisque;
+  background-color: #cccccc84;
   color: white;
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
+  font-weight: bold;
   cursor: pointer;
   &:hover {
     background-color: aquamarine;
