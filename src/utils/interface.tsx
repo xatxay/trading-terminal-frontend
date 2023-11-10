@@ -26,8 +26,30 @@ export interface Positions {
   side: string;
 }
 
+interface Info {
+  twitterId: number;
+  isReply: boolean;
+  isRetweet: boolean;
+  isQuote: boolean;
+}
+
 export interface MessageWebsocket {
-  data: any;
+  data: string;
+  title?: string;
+  body?: string;
+  icon?: string;
+  image?: string;
+  requireInteraction?: boolean;
+  type?: string;
+  link?: string;
+  info?: Info;
+  video?: string;
+  suggestions?: string[];
+  time?: number;
+  _id?: string;
+  source?: string;
+  url?: string;
+  symbols?: string[];
 }
 
 export interface NewsData {
@@ -39,4 +61,9 @@ export interface NewsData {
   suggestion?: string[];
   image?: string;
   video?: string;
+}
+
+export interface DataStatus {
+  data: string;
+  status: string;
 }

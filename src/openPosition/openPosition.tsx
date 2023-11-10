@@ -3,7 +3,7 @@ import { Button, Cell, Row, Table } from "./openPositionStyle";
 import { useGetPosition } from "../utils/utils";
 import { Positions } from "../utils/interface";
 
-const TradeTable: React.FC<any> = () => {
+const TradeTable: React.FC<{}> = () => {
   const { data, error } = useGetPosition();
 
   if (error) return <p>Error: {error}</p>;
@@ -82,7 +82,7 @@ const TradeRow: React.FC<{ trade: Positions }> = ({ trade }) => {
   );
 };
 
-const TradeRowHeader = () => {
+const TradeRowHeader: React.FC<{}> = () => {
   return (
     <Row>
       <Cell width={1} primary>
