@@ -1,5 +1,5 @@
 import styled from "@emotion/styled/macro";
-import { gray, textGray } from "./color";
+import { textGray } from "./color";
 import { ButtonProps } from "../utils/interface";
 
 const Logo = styled.img({
@@ -8,7 +8,7 @@ const Logo = styled.img({
 });
 
 const HeaderClass = styled.header({
-  backgroundColor: gray,
+  backgroundColor: "black",
   display: "flex",
   alignItems: "center",
   textAlign: "center",

@@ -1,6 +1,10 @@
 import { useFetch } from "../utils/utils";
-import "../body/bodyStyle.css";
 import { AccountSummaryInterface } from "../utils/interface";
+import {
+  AccountSummaryStyle,
+  ValueColor,
+  LabelColor,
+} from "./accountSummaryStyle";
 
 const AccountSummary = () => {
   const { data: accountSummary, error } = useFetch<AccountSummaryInterface>(
@@ -11,38 +15,34 @@ const AccountSummary = () => {
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <div className="account-summary">
+    <AccountSummaryStyle>
       {accountSummary ? (
         <ul>
           <li>
-            <span className="label-color">Account Balance </span>
-            <span className="value-color">
-              {accountSummary.totalEquity.toFixed(2)}
-            </span>
+            <LabelColor>Account Balance</LabelColor>
+            <ValueColor>{accountSummary.totalEquity.toFixed(2)}</ValueColor>
           </li>
           <li>
-            <span className="label-color">Margin Balance </span>
-            <span className="value-color">
+            <LabelColor>Margin Balance</LabelColor>
+            <ValueColor>
               {accountSummary.totalMarginBalance.toFixed(2)}
-            </span>
+            </ValueColor>
           </li>
           <li>
-            <span className="label-color">Available Balance </span>
-            <span className="value-color">
+            <LabelColor>Available Balance</LabelColor>
+            <ValueColor>
               {accountSummary.totalAvailableBalance.toFixed(2)}
-            </span>
+            </ValueColor>
           </li>
           <li>
-            <span className="label-color">Unrealize PNL </span>
-            <span className="value-color">
-              {accountSummary.totalPerpUPL.toFixed(2)}
-            </span>
+            <LabelColor>Unrealize PNL</LabelColor>
+            <ValueColor>{accountSummary.totalPerpUPL.toFixed(2)}</ValueColor>
           </li>
         </ul>
       ) : (
         <p>No account balance found</p>
       )}
-    </div>
+    </AccountSummaryStyle>
   );
 };
 

@@ -1,42 +1,30 @@
 import AccountSummary from "../accountSummary/accountSummary";
-import "../body/bodyStyle.css";
-import { ContainerProp } from "../utils/interface";
-import NewsHeadline from "../news/news";
+import { NewsHeadlineWithImg, NewsHeadlineNoImg } from "../news/news";
 import { TradeTable } from "../openPosition/openPosition";
+import {
+  LeftContainer,
+  RightContainer,
+  TopRightContainer,
+  BottomRightContainer,
+  Container,
+} from "./bodyStyle";
 
-function LeftContainer({ children }: ContainerProp) {
-  return <div className="left-container">{children}</div>;
-}
-
-function RightContainer({ children }: ContainerProp) {
-  return <div className="right-container">{children}</div>;
-}
-
-function BottomRight() {
+function Body() {
   return (
-    <div className="bottom-right-container">
-      <AccountSummary />
-    </div>
-  );
-}
-
-function TopRight({ children }: any) {
-  return <div className="top-right-container"> {children}</div>;
-}
-
-function Body({ children }: any) {
-  return (
-    <div className="container">
+    <Container>
       <LeftContainer>
-        <NewsHeadline />
+        <NewsHeadlineWithImg />
+        <NewsHeadlineNoImg />
       </LeftContainer>
       <RightContainer>
-        <TopRight>
+        <TopRightContainer>
           <TradeTable />
-        </TopRight>
-        <BottomRight />
+        </TopRightContainer>
+        <BottomRightContainer>
+          <AccountSummary />
+        </BottomRightContainer>
       </RightContainer>
-    </div>
+    </Container>
   );
 }
 

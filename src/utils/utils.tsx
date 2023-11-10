@@ -27,7 +27,7 @@ const useFetch = <T,>(
       }
     };
     fetchData();
-    const intervalId = setInterval(fetchData, 2000000);
+    const intervalId = setInterval(fetchData, 20000000);
 
     return () => {
       isMounted = false;
