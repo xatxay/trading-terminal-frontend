@@ -2,7 +2,7 @@ import styled from "@emotion/styled/macro";
 
 const NewsContainer = styled.div`
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   border-bottom: 1px solid rgb(221, 211, 211);
   padding: 16px;
   max-width: 700px;
@@ -12,30 +12,57 @@ const NewsContainer = styled.div`
   justify-content: center;
 `;
 
+const ImageContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+`;
+
+const HeaderContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+`;
+
 const NewsImage = styled.img`
   flex-shrink: 0;
-  width: 200px;
-  height: 200px;
-  object-fit: cover;
-  margin-right: 16px;
+  max-width: 250px;
+  max-height: 250px;
+  object-fit: contain;
 `;
 
 const NewsText = styled.div`
   flex-grow: 1;
   display: flex;
+  max-width: 700px;
   flex-direction: column;
   justify-content: center;
   padding: 0 1em;
 `;
 
 const NewsHeadlineStyle = styled.p`
-  font-size: 18px;
+  font-size: 20px;
   font-weight: bold;
   margin: 0;
+  color: orange;
 `;
 
-const NewsBody = styled.p`
-  font-size: 14px;
+const NewsBody = styled.a`
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 2;
+  color: white;
+  text-decoration: none;
+  &:hover {
+    color: orange;
+  }
 `;
 
 const ButtonSize = styled.div`
@@ -59,6 +86,18 @@ const ButtonContainer = styled.div`
   margin-top: 16px;
 `;
 
+const NewsVideo = styled.video`
+  flex-shrink: 0;
+  max-width: 250px;
+  max-height: 250px;
+  object-fit: contain;
+`;
+
+const Time = styled.span`
+  color: #cccccc84;
+  font-size: 13px;
+`;
+
 export {
   NewsContainer,
   NewsBody,
@@ -67,4 +106,8 @@ export {
   NewsText,
   ButtonSize,
   ButtonContainer,
+  NewsVideo,
+  ImageContainer,
+  HeaderContainer,
+  Time,
 };

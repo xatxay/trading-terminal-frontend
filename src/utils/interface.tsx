@@ -23,10 +23,20 @@ export interface Positions {
   positionValue: string;
   unrealisedPnl: string;
   markPrice: string;
-  cumRealisedPnl: string;
   side: string;
 }
 
 export interface MessageWebsocket {
   data: any;
+}
+
+export interface NewsData {
+  title: string;
+  newsHeadline: string;
+  url?: string;
+  link: string;
+  time: number;
+  suggestion?: string[];
+  image?: string;
+  video?: string;
 }

@@ -1,5 +1,5 @@
 import AccountSummary from "../accountSummary/accountSummary";
-import { NewsHeadlineWithImg, NewsHeadlineNoImg } from "../news/news";
+import { NewsHeadline } from "../news/news";
 import { TradeTable } from "../openPosition/openPosition";
 import {
   LeftContainer,
@@ -13,8 +13,7 @@ function Body() {
   return (
     <Container>
       <LeftContainer>
-        <NewsHeadlineWithImg />
-        <NewsHeadlineNoImg />
+        <NewsHeadline />
       </LeftContainer>
       <RightContainer>
         <TopRightContainer>

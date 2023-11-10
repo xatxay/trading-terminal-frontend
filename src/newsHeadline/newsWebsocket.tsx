@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { MessageWebsocket } from "../utils/interface";
 
 const useWebSocket = (url: string) => {
@@ -39,11 +39,4 @@ const useWebSocket = (url: string) => {
   return { data, status };
 };
 
-const News: React.FC = () => {
-  const { data, status } = useWebSocket("wss://news.treeofalpha.com/ws");
-
-  console.log("socket: ", data, "status: ", status);
-  return data;
-};
-
-export default News;
+export default useWebSocket;

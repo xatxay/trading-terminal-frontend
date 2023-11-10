@@ -18,7 +18,6 @@ const TradeTable: React.FC<any> = () => {
         positionValue,
         unrealisedPnl,
         markPrice,
-        cumRealisedPnl,
         side,
       }) => ({
         symbol,
@@ -28,7 +27,6 @@ const TradeTable: React.FC<any> = () => {
         positionValue,
         unrealisedPnl,
         markPrice,
-        cumRealisedPnl,
         side,
       })
     ) ?? [];
@@ -50,11 +48,9 @@ const TradeRow: React.FC<{ trade: Positions }> = ({ trade }) => {
     marketPrice: Number(trade.markPrice).toFixed(2),
     liqPrice: Number(trade.liqPrice).toFixed(2),
     uPnl: Number(trade.unrealisedPnl).toFixed(2),
-    realizedPnl: Number(trade.cumRealisedPnl).toFixed(2),
   };
   const sideColor = trade.side === "Buy" ? "green" : "red";
   const uPnlColor = Number(trade.unrealisedPnl) > 0 ? "green" : "red";
-  const rPnlColor = Number(trade.cumRealisedPnl) > 0 ? "green" : "red";
   const textColor = "white";
   return (
     <Row>
@@ -78,9 +74,6 @@ const TradeRow: React.FC<{ trade: Positions }> = ({ trade }) => {
       </Cell>
       <Cell width={1} color={uPnlColor}>
         {tradeFormat.uPnl}
-      </Cell>
-      <Cell width={1} color={rPnlColor}>
-        {tradeFormat.realizedPnl}
       </Cell>
       <Cell width={1}>
         <Button>Close</Button>
@@ -111,10 +104,7 @@ const TradeRowHeader = () => {
         Liq Price
       </Cell>
       <Cell width={1} primary>
-        UnPNL
-      </Cell>
-      <Cell width={1} primary>
-        RPNL
+        PNL
       </Cell>
       <Cell width={1} primary>
         Close All

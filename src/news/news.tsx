@@ -1,12 +1,17 @@
+import { formatDate, useExtractData } from "../utils/utils";
 import bluelock from "./bluelock.jpg";
 import {
   ButtonContainer,
   ButtonSize,
+  HeaderContainer,
+  ImageContainer,
   NewsBody,
   NewsContainer,
   NewsHeadlineStyle,
   NewsImage,
   NewsText,
+  NewsVideo,
+  Time,
 } from "./newsStyle";
 
 function NewsButtons() {
@@ -21,37 +26,36 @@ function NewsButtons() {
   );
 }
 
-function NewsHeadlineNoImg() {
+function NewsHeadline() {
+  const { title, newsHeadline, url, link, time, image, video } =
+    useExtractData();
+  const timeFormatted = formatDate(time);
   return (
     <NewsContainer>
+      <HeaderContainer>
+        <NewsHeadlineStyle>{title}</NewsHeadlineStyle>
+        <Time>{timeFormatted}</Time>
+      </HeaderContainer>
       <NewsText>
-        <NewsHeadlineStyle>News article headline</NewsHeadlineStyle>
-        <NewsBody>
-          SCOOP: Crypto exchange @krakenfx is considering bids to build its own
-          layer-2 blockchain, in talks with @0xPolygonLabs, @the_matter_labs
-          @nil_foundation, sources tell @cryptauxmargaux
+        <NewsBody
+          as="a"
+          href={link ? link : url}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {newsHeadline}
         </NewsBody>
       </NewsText>
+      <ImageContainer>
+        {video ? (
+          <NewsVideo controls src={video} />
+        ) : image ? (
+          <NewsImage src={image} alt="News" />
+        ) : null}
+      </ImageContainer>
       <NewsButtons />
     </NewsContainer>
   );
 }
 
-function NewsHeadlineWithImg() {
-  return (
-    <NewsContainer>
-      <NewsText>
-        <NewsHeadlineStyle>News article headline</NewsHeadlineStyle>
-        <NewsBody>
-          SCOOP: Crypto exchange @krakenfx is considering bids to build its own
-          layer-2 blockchain, in talks with @0xPolygonLabs, @the_matter_labs
-          @nil_foundation, sources tell @cryptauxmargaux
-        </NewsBody>
-      </NewsText>
-      <NewsImage src={bluelock} />
-      <NewsButtons />
-    </NewsContainer>
-  );
-}
-
-export { NewsHeadlineNoImg, NewsHeadlineWithImg };
+export { NewsHeadline };
