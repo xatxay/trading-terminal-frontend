@@ -65,11 +65,11 @@ const NewsBody = styled.a`
   }
 `;
 
-const ButtonSize = styled.div`
+const ButtonSize = styled.div<{ primary?: boolean }>`
   color: white;
   padding: 10px 40px;
   border-radius: 5px;
-  border: 2px solid green;
+  border: ${(props) => (props.primary ? "2px solid green" : "2px solid red")};
   font-weight: bold;
   cursor: pointer;
   &:hover {

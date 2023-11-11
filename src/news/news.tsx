@@ -1,5 +1,5 @@
 import { formatDate, useExtractData } from "../utils/utils";
-import bluelock from "./bluelock.jpg";
+import React from "react";
 import {
   ButtonContainer,
   ButtonSize,
@@ -14,47 +14,57 @@ import {
   Time,
 } from "./newsStyle";
 
-function NewsButtons() {
+const NewsButtons: React.FC<{ coin: string }> = ({ coin }) => {
+  console.log("coins: ", coin);
   return (
     <ButtonContainer>
       <ButtonSize>75%</ButtonSize>
       <ButtonSize>25%</ButtonSize>
-      <ButtonSize>All In</ButtonSize>
-      <ButtonSize>25%</ButtonSize>
-      <ButtonSize>75%</ButtonSize>
+      <ButtonSize primary>{coin}</ButtonSize>
+      <ButtonSize primary>25%</ButtonSize>
+      <ButtonSize primary>75%</ButtonSize>
     </ButtonContainer>
   );
-}
+};
 
 function NewsHeadline() {
-  const { title, newsHeadline, url, link, time, image, video } =
-    useExtractData();
-  const timeFormatted = formatDate(time);
+  const messages = useExtractData();
+
   return (
-    <NewsContainer>
-      <HeaderContainer>
-        <NewsHeadlineStyle>{title}</NewsHeadlineStyle>
-        <Time>{timeFormatted}</Time>
-      </HeaderContainer>
-      <NewsText>
-        <NewsBody
-          as="a"
-          href={link ? link : url}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          {newsHeadline}
-        </NewsBody>
-      </NewsText>
-      <ImageContainer>
-        {video ? (
-          <NewsVideo controls src={video} />
-        ) : image ? (
-          <NewsImage src={image} alt="News" />
-        ) : null}
-      </ImageContainer>
-      <NewsButtons />
-    </NewsContainer>
+    <div>
+      {messages.map((message) => (
+        <NewsContainer key={message._id}>
+          <HeaderContainer>
+            <NewsHeadlineStyle>{message.title}</NewsHeadlineStyle>
+            <Time>{formatDate(message.time)}</Time>
+          </HeaderContainer>
+          <NewsText>
+            <NewsBody
+              as="a"
+              href={message.link ? message.link : message.url}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {message.newsHeadline}
+            </NewsBody>
+          </NewsText>
+          <ImageContainer>
+            {message.video ? (
+              <NewsVideo controls src={message.video} />
+            ) : message.image ? (
+              <NewsImage src={message.image} alt="News" />
+            ) : null}
+          </ImageContainer>
+          {message.suggestions && message.suggestions.length > 0 ? (
+            message.suggestions.map((sugguest) => (
+              <NewsButtons key={sugguest} coin={sugguest || "N/A"} />
+            ))
+          ) : (
+            <NewsButtons coin="N/A" />
+          )}
+        </NewsContainer>
+      ))}
+    </div>
   );
 }
 

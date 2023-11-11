@@ -42,52 +42,65 @@ const useGetPosition = () => {
   return useFetch<Positions[]>("http://localhost:5000/positions");
 };
 
-const useExtractData = (): any => {
+const useExtractData = (): NewsData[] => {
   const { data, status } = useWebSocket("wss://news.treeofalpha.com/ws");
-  let parseData: any = {};
-  if (data) parseData = JSON.parse(data);
+  const [messages, setMessages] = useState<NewsData[]>([]);
 
-  const newsData: NewsData = {
-    title: "",
-    newsHeadline: "",
-    suggestion: [],
-    url: "",
-    link: "",
-    image: "",
-    video: "",
-    time: 0,
-  };
+  useEffect(() => {
+    if (data) {
+      const parseData = JSON.parse(data);
 
-  if (parseData) {
-    console.log("data: ", parseData.title);
+      const newsData: NewsData = {
+        title: "",
+        newsHeadline: "",
+        suggestions: [],
+        url: "",
+        link: "",
+        image: "",
+        video: "",
+        time: 0,
+        _id: "",
+      };
 
-    if (parseData.source) {
-      const blogTitle = parseData.title.match(/^([A-Z\s\\.\\-]+:)/) || [];
-      newsData.title = blogTitle ? blogTitle[0].trim() : "";
-      console.log("BLOGTITLE: ", blogTitle);
-      newsData.newsHeadline = newsData.title
-        ? parseData.title.substring(newsData.title.length).trim()
-        : parseData.title;
-      newsData.url = parseData.url;
-    } else {
-      const twitterTitle = parseData.title
-        ? parseData.title.match(/@([A-Za-z0-9_]+)/)
-        : "";
-      newsData.title = twitterTitle[1];
-      console.log("TWITTERTITLE: ", newsData.title);
-      newsData.newsHeadline = parseData.body;
-      newsData.link = parseData.link;
+      if (!parseData) return;
+      if (parseData.source) {
+        const blogTitle = parseData.title.match(/^([A-Z\s\\.\\-]+:)/) || [];
+        newsData.title = blogTitle ? blogTitle[0].trim() : "";
+        console.log("BLOGTITLE: ", blogTitle);
+        newsData.newsHeadline = newsData.title
+          ? parseData.title.substring(newsData.title.length).trim()
+          : parseData.title;
+        newsData.url = parseData.url;
+      } else {
+        const twitterTitle = parseData.title
+          ? parseData.title.match(/@([A-Za-z0-9_]+)/)
+          : "";
+        newsData.title = twitterTitle[1];
+        console.log("TWITTERTITLE: ", newsData.title);
+        newsData.newsHeadline = parseData.body;
+        newsData.link = parseData.link;
+      }
+      newsData.image = parseData.image ? parseData.image : "";
+      newsData.video = parseData.video ? parseData.video : "";
+      newsData.suggestions = parseData.suggestions
+        ? parseData.suggestions.map((coin: { coin: string }) => coin.coin)
+        : [];
+      newsData.time = parseData.time;
+      newsData._id = parseData._id;
+
+      setMessages((prevMessage) => {
+        const newMessages = [newsData, ...prevMessage];
+        if (newMessages.length > 15) {
+          newMessages.pop();
+        }
+        return newMessages;
+      });
+
+      console.log("staus: ", status);
+      console.log("socket: ", parseData);
     }
-    newsData.image = parseData.image ? parseData.image : "";
-    newsData.video = parseData.video ? parseData.video : "";
-    newsData.suggestion = parseData.suggestions
-      ? parseData.suggestions.map((coin: { coin: string }) => coin.coin)
-      : [];
-    newsData.time = parseData.time;
-
-    console.log("socket: ", parseData, "status: ", status);
-    return newsData;
-  }
+  }, [data, status]);
+  return messages;
 };
 
 const formatDate = (timeMs: number): string => {

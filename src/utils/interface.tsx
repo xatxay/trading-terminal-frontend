@@ -58,9 +58,16 @@ export interface NewsData {
   url?: string;
   link: string;
   time: number;
-  suggestion?: string[];
+  suggestions: string[];
   image?: string;
   video?: string;
+  _id: string;
+  source?: string;
+  body?: string;
+}
+
+export interface Suggestion {
+  coin?: string;
 }
 
 export interface DataStatus {
