@@ -28,7 +28,7 @@ const useFetch = <T,>(
       }
     };
     fetchData();
-    const intervalId = setInterval(fetchData, 20000000);
+    const intervalId = setInterval(fetchData, 10000000);
 
     return () => {
       isMounted = false;
@@ -65,7 +65,7 @@ const useExtractData = (): NewsData[] => {
       if (!parseData) return;
       if (parseData.source) {
         const blogTitle = parseData.title.match(/^([A-Z\s\\.\\-]+:)/) || [];
-        newsData.title = blogTitle ? blogTitle[0].trim() : "";
+        newsData.title = blogTitle[0] ? blogTitle[0].trim() : "";
         console.log("BLOGTITLE: ", blogTitle);
         newsData.newsHeadline = newsData.title
           ? parseData.title.substring(newsData.title.length).trim()
@@ -113,4 +113,43 @@ const formatDate = (timeMs: number): string => {
   return timeFormatted;
 };
 
-export { useFetch, useGetPosition, useExtractData, formatDate };
+const useGetPrice = () => {
+  const { data, status } = useWebSocket("ws://localhost:8080");
+  // const [messages, setMessages] = useState(null);
+
+  useEffect(() => {
+    if (!data) return;
+    const parseData = JSON.parse(data);
+    console.log("price: ", parseData);
+    console.log("status: ", status);
+  }, [data, status]);
+};
+
+const handleClick = async (
+  endpoint: string,
+  symbol?: string,
+  side?: string
+) => {
+  try {
+    const response = await fetch(`http://localhost:5000${endpoint}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ symbol, side }),
+    });
+    const data = await response.json();
+    console.log(data.message);
+  } catch (err) {
+    console.error("Error: ", err);
+  }
+};
+
+export {
+  useFetch,
+  useGetPosition,
+  useExtractData,
+  formatDate,
+  useGetPrice,
+  handleClick,
+};

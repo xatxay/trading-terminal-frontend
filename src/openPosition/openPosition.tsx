@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, Cell, Row, Table } from "./openPositionStyle";
-import { useGetPosition } from "../utils/utils";
+import { handleClick, useGetPosition } from "../utils/utils";
 import { Positions } from "../utils/interface";
 
 const TradeTable: React.FC<{}> = () => {
@@ -30,12 +30,11 @@ const TradeTable: React.FC<{}> = () => {
         side,
       })
     ) ?? [];
-  console.log("positions: ", positions);
   return (
     <Table>
       <TradeRowHeader />
       {positions.map((pos) => {
-        return <TradeRow key={pos.positionValue} trade={pos} />;
+        return <TradeRow key={pos.symbol} trade={pos} />;
       })}
     </Table>
   );
@@ -76,7 +75,11 @@ const TradeRow: React.FC<{ trade: Positions }> = ({ trade }) => {
         {tradeFormat.uPnl}
       </Cell>
       <Cell width={1}>
-        <Button>Close</Button>
+        <Button
+          onClick={async () => handleClick("/close", trade.symbol, trade.side)}
+        >
+          Close
+        </Button>
       </Cell>
     </Row>
   );
@@ -106,7 +109,11 @@ const TradeRowHeader: React.FC<{}> = () => {
       <Cell width={1} primary>
         PNL
       </Cell>
-      <Cell width={1} primary>
+      <Cell
+        width={1}
+        primary
+        onClick={async () => await handleClick("/closeAll")}
+      >
         Close All
       </Cell>
     </Row>

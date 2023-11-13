@@ -1,4 +1,5 @@
 import AccountSummary from "../accountSummary/accountSummary";
+import LogContainer from "../logTerminal/logTerminalButton";
 import { NewsHeadline } from "../news/news";
 import { TradeTable } from "../openPosition/openPosition";
 import {
@@ -7,6 +8,7 @@ import {
   TopRightContainer,
   BottomRightContainer,
   Container,
+  MiddleRightContainer,
 } from "./bodyStyle";
 
 function Body() {
@@ -19,6 +21,9 @@ function Body() {
         <TopRightContainer>
           <TradeTable />
         </TopRightContainer>
+        <MiddleRightContainer>
+          <LogContainer />
+        </MiddleRightContainer>
         <BottomRightContainer>
           <AccountSummary />
         </BottomRightContainer>

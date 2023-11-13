@@ -18,8 +18,12 @@ const RightContainer = styled.div`
 `;
 
 const TopRightContainer = styled.div`
-  height: 75vh;
+  height: 50vh;
   overflow: auto;
+`;
+
+const MiddleRightContainer = styled.div`
+  height: 25vh;
 `;
 
 const BottomRightContainer = styled.div`
@@ -32,4 +36,5 @@ export {
   RightContainer,
   TopRightContainer,
   BottomRightContainer,
+  MiddleRightContainer,
 };

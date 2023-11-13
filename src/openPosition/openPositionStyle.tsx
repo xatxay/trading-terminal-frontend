@@ -1,3 +1,4 @@
+import { css } from "@emotion/react";
 import styled from "@emotion/styled/macro";
 
 const Table = styled.div`
@@ -17,11 +18,25 @@ const Row = styled.div`
   }
 `;
 
-const Cell = styled.div<{ width: number; color?: string; primary?: boolean }>`
+const closeAllStlye = css`
+  cursor: pointer;
+  text-decoration: underline;
+  &:hover {
+    color: #ffae42;
+  }
+`;
+
+const Cell = styled.div<{
+  width: number;
+  color?: string;
+  primary?: boolean;
+  onClick?: () => void;
+}>`
   flex: ${(props) => props.width};
   text-align: center;
   color: ${(props) => props.color || "inherit"};
   font-weight: ${(props) => (props.primary ? "bold" : "normal")};
+  ${(props) => props.onClick && closeAllStlye}
 `;
 
 const Button = styled.button`

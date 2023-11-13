@@ -1,4 +1,4 @@
-import { formatDate, useExtractData } from "../utils/utils";
+import { formatDate, useExtractData, useGetPrice } from "../utils/utils";
 import React from "react";
 import {
   ButtonContainer,
@@ -29,6 +29,7 @@ const NewsButtons: React.FC<{ coin: string }> = ({ coin }) => {
 
 function NewsHeadline() {
   const messages = useExtractData();
+  useGetPrice();
 
   return (
     <div>

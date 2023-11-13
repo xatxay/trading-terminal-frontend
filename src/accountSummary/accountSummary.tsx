@@ -10,7 +10,6 @@ const AccountSummary = () => {
   const { data: accountSummary, error } = useFetch<AccountSummaryInterface>(
     "http://localhost:5000/accountSummary"
   );
-  console.log(accountSummary);
 
   if (error) return <p>Error: {error}</p>;
 
