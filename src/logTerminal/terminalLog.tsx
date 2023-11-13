@@ -5,15 +5,17 @@ const TerminalLog: React.FC<{ messages: string[] }> = ({ messages }) => {
   const logAutoScroll = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    logAutoScroll.current?.scrollIntoView({ behavior: "smooth" });
+    if (logAutoScroll.current) {
+      const { scrollHeight, clientHeight } = logAutoScroll.current;
+      logAutoScroll.current.scrollTop = scrollHeight - clientHeight;
+    }
   }, [messages]);
 
   return (
-    <LogContainer>
+    <LogContainer ref={logAutoScroll}>
       {messages.map((msg, index) => (
         <div key={index}>{msg}</div>
       ))}
-      <div ref={logAutoScroll} />
     </LogContainer>
   );
 };

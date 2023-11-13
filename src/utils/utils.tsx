@@ -103,12 +103,12 @@ const useExtractData = (): NewsData[] => {
   return messages;
 };
 
-const formatDate = (timeMs: number): string => {
-  const time = new Date(timeMs),
+const formatDate = (timeMs?: number): string => {
+  const time = timeMs ? new Date(timeMs) : new Date(),
     hours = time.getHours().toString().padStart(2, "0"),
     minutes = time.getMinutes().toString().padStart(2, "0"),
     seconds = time.getSeconds().toString().padStart(2, "0"),
-    milliseconds = time.getMilliseconds().toString().padStart(2, "0"),
+    milliseconds = time.getMilliseconds().toString().padStart(3, "0"),
     timeFormatted = `${hours}:${minutes}:${seconds}:${milliseconds}`;
   return timeFormatted;
 };

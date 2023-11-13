@@ -33,7 +33,6 @@ const Body: React.FC<{
         </BottomRightContainer>
       </RightContainer>
     </Container>
-    // fix auto scroll
   );
 };
 
