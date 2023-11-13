@@ -127,8 +127,9 @@ const useGetPrice = () => {
 
 const handleClick = async (
   endpoint: string,
-  symbol?: string,
-  side?: string
+  addLogMessage: (message: string) => void,
+  side?: string,
+  symbol?: string
 ) => {
   try {
     const response = await fetch(`http://localhost:5000${endpoint}`, {
@@ -136,12 +137,14 @@ const handleClick = async (
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ symbol, side }),
+      body: JSON.stringify({ side, symbol }),
     });
     const data = await response.json();
+    addLogMessage(data.message);
     console.log(data.message);
   } catch (err) {
     console.error("Error: ", err);
+    addLogMessage(`Error: ${err}`);
   }
 };
 

@@ -1,5 +1,5 @@
+import React from "react";
 import AccountSummary from "../accountSummary/accountSummary";
-import LogContainer from "../logTerminal/logTerminalButton";
 import { NewsHeadline } from "../news/news";
 import { TradeTable } from "../openPosition/openPosition";
 import {
@@ -10,8 +10,12 @@ import {
   Container,
   MiddleRightContainer,
 } from "./bodyStyle";
+import TerminalLog from "../logTerminal/terminalLog";
 
-function Body() {
+const Body: React.FC<{
+  logMessages: string[];
+  addLogMessage: (message: string) => void;
+}> = ({ logMessages, addLogMessage }) => {
   return (
     <Container>
       <LeftContainer>
@@ -19,17 +23,18 @@ function Body() {
       </LeftContainer>
       <RightContainer>
         <TopRightContainer>
-          <TradeTable />
+          <TradeTable addLogMessage={addLogMessage} />
         </TopRightContainer>
         <MiddleRightContainer>
-          <LogContainer />
+          <TerminalLog messages={logMessages} />
         </MiddleRightContainer>
         <BottomRightContainer>
           <AccountSummary />
         </BottomRightContainer>
       </RightContainer>
     </Container>
+    // fix auto scroll
   );
-}
+};
 
 export default Body;

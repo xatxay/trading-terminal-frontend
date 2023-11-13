@@ -3,7 +3,9 @@ import { Button, Cell, Row, Table } from "./openPositionStyle";
 import { handleClick, useGetPosition } from "../utils/utils";
 import { Positions } from "../utils/interface";
 
-const TradeTable: React.FC<{}> = () => {
+const TradeTable: React.FC<{
+  addLogMessage: (message: string) => void;
+}> = ({ addLogMessage }) => {
   const { data, error } = useGetPosition();
 
   if (error) return <p>Error: {error}</p>;
@@ -32,15 +34,24 @@ const TradeTable: React.FC<{}> = () => {
     ) ?? [];
   return (
     <Table>
-      <TradeRowHeader />
+      <TradeRowHeader addLogMessage={addLogMessage} />
       {positions.map((pos) => {
-        return <TradeRow key={pos.symbol} trade={pos} />;
+        return (
+          <TradeRow
+            key={pos.symbol}
+            trade={pos}
+            addLogMessage={addLogMessage}
+          />
+        );
       })}
     </Table>
   );
 };
 
-const TradeRow: React.FC<{ trade: Positions }> = ({ trade }) => {
+const TradeRow: React.FC<{
+  trade: Positions;
+  addLogMessage: (message: string) => void;
+}> = ({ trade, addLogMessage }) => {
   const tradeFormat = {
     positionSize: Number(trade.positionValue).toFixed(2),
     entry: Number(trade.avgPrice).toFixed(2),
@@ -76,7 +87,9 @@ const TradeRow: React.FC<{ trade: Positions }> = ({ trade }) => {
       </Cell>
       <Cell width={1}>
         <Button
-          onClick={async () => handleClick("/close", trade.symbol, trade.side)}
+          onClick={async () =>
+            handleClick("/close", addLogMessage, trade.side, trade.symbol)
+          }
         >
           Close
         </Button>
@@ -85,7 +98,9 @@ const TradeRow: React.FC<{ trade: Positions }> = ({ trade }) => {
   );
 };
 
-const TradeRowHeader: React.FC<{}> = () => {
+const TradeRowHeader: React.FC<{
+  addLogMessage: (message: string) => void;
+}> = ({ addLogMessage }) => {
   return (
     <Row>
       <Cell width={1} primary>
@@ -112,7 +127,7 @@ const TradeRowHeader: React.FC<{}> = () => {
       <Cell
         width={1}
         primary
-        onClick={async () => await handleClick("/closeAll")}
+        onClick={async () => await handleClick("/closeAll", addLogMessage)}
       >
         Close All
       </Cell>
