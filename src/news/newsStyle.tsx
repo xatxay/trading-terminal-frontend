@@ -1,4 +1,5 @@
 import styled from "@emotion/styled/macro";
+import Modal from "react-modal";
 
 const NewsContainer = styled.div`
   display: flex;
@@ -65,12 +66,12 @@ const NewsBody = styled.a`
   }
 `;
 
-const ButtonSize = styled.div<{ primary?: boolean }>`
+const ButtonSize = styled.div<{ primary?: boolean; middle?: boolean }>`
   color: white;
   padding: 10px 40px;
   border-radius: 5px;
+  font-size: 15px;
   border: ${(props) => (props.primary ? "2px solid green" : "2px solid red")};
-  font-weight: bold;
   cursor: pointer;
   &:hover {
     background-color: #ffae42;
@@ -102,6 +103,29 @@ const Percentage = styled.span<{ positive: boolean }>`
   color: ${(props) => (props.positive ? "green" : "red")};
 `;
 
+const ModalOverlay = styled(Modal)`
+  background-lor: rgba(0, 0, 0, 0.75);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const ModalContent = styled.div`
+  background-color: black;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 90%;
+  max-height: 90%;
+  margin: auto;
+`;
+
 export {
   NewsContainer,
   NewsBody,
@@ -115,4 +139,6 @@ export {
   HeaderContainer,
   Time,
   Percentage,
+  ModalOverlay,
+  ModalContent,
 };
