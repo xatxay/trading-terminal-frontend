@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { NewsData, Positions } from "./interface";
+import { NewsData, Positions, PriceData } from "./interface";
 import useWebSocket from "../newsHeadline/newsWebsocket";
 
 const useFetch = <T,>(
@@ -113,16 +113,22 @@ const formatDate = (timeMs?: number): string => {
   return timeFormatted;
 };
 
-const useGetPrice = () => {
+const useGetPrice = (): PriceData => {
   const { data, status } = useWebSocket("ws://localhost:8080");
-  // const [messages, setMessages] = useState(null);
+  const [tickerPercentage, setTickerPercentage] = useState<PriceData>({
+    ticker: "",
+    percentage: 0,
+  });
 
   useEffect(() => {
     if (!data) return;
     const parseData = JSON.parse(data);
-    console.log("price: ", parseData);
+    // console.log("price: ", parseData);
     console.log("status: ", status);
+    setTickerPercentage(parseData);
   }, [data, status]);
+
+  return tickerPercentage;
 };
 
 const handleClick = async (
@@ -131,6 +137,7 @@ const handleClick = async (
   side?: string,
   symbol?: string
 ) => {
+  console.log("sss: ", side, symbol);
   try {
     const response = await fetch(`http://localhost:5000${endpoint}`, {
       method: "POST",

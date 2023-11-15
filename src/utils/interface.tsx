@@ -74,3 +74,8 @@ export interface DataStatus {
   data: string;
   status: string;
 }
+
+export interface PriceData {
+  ticker: string;
+  percentage: number;
+}

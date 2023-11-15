@@ -98,6 +98,10 @@ const Time = styled.span`
   font-size: 13px;
 `;
 
+const Percentage = styled.span<{ positive: boolean }>`
+  color: ${(props) => (props.positive ? "green" : "red")};
+`;
+
 export {
   NewsContainer,
   NewsBody,
@@ -110,4 +114,5 @@ export {
   ImageContainer,
   HeaderContainer,
   Time,
+  Percentage,
 };

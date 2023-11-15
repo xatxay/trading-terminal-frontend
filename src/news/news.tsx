@@ -1,5 +1,5 @@
 import { formatDate, useExtractData, useGetPrice } from "../utils/utils";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   ButtonContainer,
   ButtonSize,
@@ -11,16 +11,25 @@ import {
   NewsImage,
   NewsText,
   NewsVideo,
+  Percentage,
   Time,
 } from "./newsStyle";
 
-const NewsButtons: React.FC<{ coin: string }> = ({ coin }) => {
+const NewsButtons: React.FC<{ coin: string; percentage?: number }> = ({
+  coin,
+  percentage,
+}) => {
   console.log("coins: ", coin);
   return (
     <ButtonContainer>
       <ButtonSize>75%</ButtonSize>
       <ButtonSize>25%</ButtonSize>
-      <ButtonSize primary>{coin}</ButtonSize>
+      <ButtonSize primary>
+        {coin}{" "}
+        {percentage !== undefined && (
+          <Percentage positive={percentage > 0}>{percentage}%</Percentage>
+        )}
+      </ButtonSize>
       <ButtonSize primary>25%</ButtonSize>
       <ButtonSize primary>75%</ButtonSize>
     </ButtonContainer>
@@ -29,7 +38,15 @@ const NewsButtons: React.FC<{ coin: string }> = ({ coin }) => {
 
 function NewsHeadline() {
   const messages = useExtractData();
-  useGetPrice();
+  const { ticker, percentage } = useGetPrice();
+  const [tickerPercentage, setTickerPercentage] = useState<{
+    [key: string]: number;
+  }>({});
+  console.log("tickerPercentage: ", ticker, "|", percentage);
+
+  useEffect(() => {
+    setTickerPercentage((prev) => ({ ...prev, [ticker]: percentage }));
+  }, [ticker, percentage]);
 
   return (
     <div>
@@ -58,7 +75,11 @@ function NewsHeadline() {
           </ImageContainer>
           {message.suggestions && message.suggestions.length > 0 ? (
             message.suggestions.map((sugguest) => (
-              <NewsButtons key={sugguest} coin={sugguest || "N/A"} />
+              <NewsButtons
+                key={sugguest}
+                coin={sugguest || "N/A"}
+                percentage={tickerPercentage[sugguest]}
+              />
             ))
           ) : (
             <NewsButtons coin="N/A" />

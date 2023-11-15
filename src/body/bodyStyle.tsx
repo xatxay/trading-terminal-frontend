@@ -9,6 +9,9 @@ const Container = styled.div`
 const LeftContainer = styled.div`
   flex: 1;
   overflow: auto;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const RightContainer = styled.div`
@@ -20,6 +23,9 @@ const RightContainer = styled.div`
 const TopRightContainer = styled.div`
   height: 50vh;
   overflow: auto;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const MiddleRightContainer = styled.div`
