@@ -5,14 +5,12 @@ import {
   useGetPrice,
 } from "../utils/utils";
 import React, { useEffect, useState } from "react";
-import Modal from "react-modal";
+// import Modal from "react-modal";
 import {
   ButtonContainer,
   ButtonSize,
   HeaderContainer,
   ImageContainer,
-  ModalContent,
-  ModalOverlay,
   NewsBody,
   NewsContainer,
   NewsHeadlineStyle,
@@ -22,26 +20,47 @@ import {
   Percentage,
   Time,
 } from "./newsStyle";
+import "../news/imageModal.css";
+import ReactModal from "react-modal";
 
-Modal.setAppElement("#root");
+ReactModal.setAppElement("#root");
 
 const NewsButtons: React.FC<{
   coin: string;
   percentage?: number;
   addLogMessage: (message: string) => void;
 }> = ({ coin, percentage, addLogMessage }) => {
-  console.log("coins: ", coin);
-  const sell = "Sell";
-  const buy = "Buy";
+  const tradeInfo = {
+    buy: "Buy",
+    sell: "Sell",
+    twentyFive: "25",
+    seventyFive: "75",
+  };
   return (
     <ButtonContainer>
       <ButtonSize
-        onClick={async () => handleClick("/75", addLogMessage, sell, coin)}
+        onClick={async () =>
+          handleClick(
+            "/submitOrder",
+            addLogMessage,
+            tradeInfo.sell,
+            coin,
+            tradeInfo.seventyFive
+          )
+        }
       >
         75%
       </ButtonSize>
       <ButtonSize
-        onClick={async () => handleClick("/25", addLogMessage, sell, coin)}
+        onClick={async () =>
+          handleClick(
+            "/submitOrder",
+            addLogMessage,
+            tradeInfo.sell,
+            coin,
+            tradeInfo.twentyFive
+          )
+        }
       >
         25%
       </ButtonSize>
@@ -53,13 +72,29 @@ const NewsButtons: React.FC<{
       </ButtonSize>
       <ButtonSize
         primary
-        onClick={async () => handleClick("/25", addLogMessage, buy, coin)}
+        onClick={async () =>
+          handleClick(
+            "/submitOrder",
+            addLogMessage,
+            tradeInfo.buy,
+            coin,
+            tradeInfo.twentyFive
+          )
+        }
       >
         25%
       </ButtonSize>
       <ButtonSize
         primary
-        onClick={async () => handleClick("/75", addLogMessage, buy, coin)}
+        onClick={async () =>
+          handleClick(
+            "/submitOrder",
+            addLogMessage,
+            tradeInfo.buy,
+            coin,
+            tradeInfo.seventyFive
+          )
+        }
       >
         75%
       </ButtonSize>
@@ -84,7 +119,15 @@ const NewsHeadline: React.FC<{ addLogMessage: (message: string) => void }> = ({
   };
 
   const closeModal = () => {
+    console.log("closing modal");
     setModalIsOpen(false);
+  };
+
+  const onImageClick = (
+    event: React.MouseEvent<HTMLImageElement, MouseEvent>
+  ) => {
+    event.stopPropagation();
+    closeModal();
   };
 
   useEffect(() => {
@@ -134,15 +177,23 @@ const NewsHeadline: React.FC<{ addLogMessage: (message: string) => void }> = ({
           )}
         </NewsContainer>
       ))}
-      <ModalOverlay
+      <ReactModal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
         contentLabel="Image Modal"
+        shouldCloseOnOverlayClick={true}
+        className="modal"
+        overlayClassName="overlay"
       >
-        <ModalContent>
-          {activeImage && <img src={activeImage} alt="Full Screen" />}
-        </ModalContent>
-      </ModalOverlay>
+        {activeImage && (
+          <img
+            src={activeImage}
+            alt="Full Screen"
+            onClick={onImageClick}
+            className="image"
+          />
+        )}
+      </ReactModal>
     </div>
   );
 };

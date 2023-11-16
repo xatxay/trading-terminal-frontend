@@ -135,16 +135,17 @@ const handleClick = async (
   endpoint: string,
   addLogMessage: (message: string) => void,
   side?: string,
-  symbol?: string
+  symbol?: string,
+  percentage?: string
 ) => {
-  console.log("sss: ", side, symbol);
+  console.log("sss: ", side, symbol, endpoint, percentage);
   try {
     const response = await fetch(`http://localhost:5000${endpoint}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ side, symbol }),
+      body: JSON.stringify({ side, symbol, percentage }),
     });
     const data = await response.json();
     addLogMessage(data.message);
