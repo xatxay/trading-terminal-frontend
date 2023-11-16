@@ -19,7 +19,7 @@ const Body: React.FC<{
   return (
     <Container>
       <LeftContainer>
-        <NewsHeadline />
+        <NewsHeadline addLogMessage={addLogMessage} />
       </LeftContainer>
       <RightContainer>
         <TopRightContainer>

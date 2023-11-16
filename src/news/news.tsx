@@ -1,4 +1,9 @@
-import { formatDate, useExtractData, useGetPrice } from "../utils/utils";
+import {
+  formatDate,
+  handleClick,
+  useExtractData,
+  useGetPrice,
+} from "../utils/utils";
 import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
 import {
@@ -20,28 +25,51 @@ import {
 
 Modal.setAppElement("#root");
 
-const NewsButtons: React.FC<{ coin: string; percentage?: number }> = ({
-  coin,
-  percentage,
-}) => {
+const NewsButtons: React.FC<{
+  coin: string;
+  percentage?: number;
+  addLogMessage: (message: string) => void;
+}> = ({ coin, percentage, addLogMessage }) => {
   console.log("coins: ", coin);
+  const sell = "Sell";
+  const buy = "Buy";
   return (
     <ButtonContainer>
-      <ButtonSize>75%</ButtonSize>
-      <ButtonSize>25%</ButtonSize>
+      <ButtonSize
+        onClick={async () => handleClick("/75", addLogMessage, sell, coin)}
+      >
+        75%
+      </ButtonSize>
+      <ButtonSize
+        onClick={async () => handleClick("/25", addLogMessage, sell, coin)}
+      >
+        25%
+      </ButtonSize>
       <ButtonSize primary>
         {coin}{" "}
         {percentage !== undefined && (
           <Percentage positive={percentage > 0}>{percentage}%</Percentage>
         )}
       </ButtonSize>
-      <ButtonSize primary>25%</ButtonSize>
-      <ButtonSize primary>75%</ButtonSize>
+      <ButtonSize
+        primary
+        onClick={async () => handleClick("/25", addLogMessage, buy, coin)}
+      >
+        25%
+      </ButtonSize>
+      <ButtonSize
+        primary
+        onClick={async () => handleClick("/75", addLogMessage, buy, coin)}
+      >
+        75%
+      </ButtonSize>
     </ButtonContainer>
   );
 };
 
-function NewsHeadline() {
+const NewsHeadline: React.FC<{ addLogMessage: (message: string) => void }> = ({
+  addLogMessage,
+}) => {
   const messages = useExtractData();
   const { ticker, percentage } = useGetPrice();
   const [tickerPercentage, setTickerPercentage] = useState<{
@@ -98,10 +126,11 @@ function NewsHeadline() {
                 key={sugguest}
                 coin={sugguest || "N/A"}
                 percentage={tickerPercentage[sugguest]}
+                addLogMessage={addLogMessage}
               />
             ))
           ) : (
-            <NewsButtons coin="N/A" />
+            <NewsButtons coin="N/A" addLogMessage={addLogMessage} />
           )}
         </NewsContainer>
       ))}
@@ -116,6 +145,6 @@ function NewsHeadline() {
       </ModalOverlay>
     </div>
   );
-}
+};
 
 export { NewsHeadline };
