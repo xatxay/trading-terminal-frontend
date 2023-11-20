@@ -79,3 +79,17 @@ export interface PriceData {
   ticker: string;
   percentage: number;
 }
+
+export interface BackendData {
+  message?: string;
+  token?: string;
+}
+
+export interface RequestOptions {
+  method: "GET" | "POST";
+  headers: {
+    "Content-Type": string;
+    Authorization: string;
+  };
+  body?: string;
+}

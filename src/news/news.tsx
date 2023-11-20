@@ -22,6 +22,7 @@ import {
 } from "./newsStyle";
 import "../news/imageModal.css";
 import ReactModal from "react-modal";
+import { useNavigate } from "react-router-dom";
 
 ReactModal.setAppElement("#root");
 
@@ -30,6 +31,7 @@ const NewsButtons: React.FC<{
   percentage?: number;
   addLogMessage: (message: string) => void;
 }> = ({ coin, percentage, addLogMessage }) => {
+  const navigate = useNavigate();
   const tradeInfo = {
     buy: "Buy",
     sell: "Sell",
@@ -43,6 +45,7 @@ const NewsButtons: React.FC<{
           handleClick(
             "/submitOrder",
             addLogMessage,
+            navigate,
             tradeInfo.sell,
             coin,
             tradeInfo.seventyFive
@@ -56,6 +59,7 @@ const NewsButtons: React.FC<{
           handleClick(
             "/submitOrder",
             addLogMessage,
+            navigate,
             tradeInfo.sell,
             coin,
             tradeInfo.twentyFive
@@ -76,6 +80,7 @@ const NewsButtons: React.FC<{
           handleClick(
             "/submitOrder",
             addLogMessage,
+            navigate,
             tradeInfo.buy,
             coin,
             tradeInfo.twentyFive
@@ -90,6 +95,7 @@ const NewsButtons: React.FC<{
           handleClick(
             "/submitOrder",
             addLogMessage,
+            navigate,
             tradeInfo.buy,
             coin,
             tradeInfo.seventyFive

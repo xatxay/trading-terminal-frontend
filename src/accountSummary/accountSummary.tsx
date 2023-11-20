@@ -8,7 +8,8 @@ import {
 
 const AccountSummary = () => {
   const { data: accountSummary, error } = useFetch<AccountSummaryInterface>(
-    "http://localhost:5000/accountSummary"
+    "http://localhost:5000/accountSummary",
+    100000000
   );
 
   if (error) return <p>Error: {error}</p>;

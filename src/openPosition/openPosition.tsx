@@ -2,6 +2,7 @@ import React from "react";
 import { Button, Cell, Row, Table } from "./openPositionStyle";
 import { handleClick, useGetPosition } from "../utils/utils";
 import { Positions } from "../utils/interface";
+import { useNavigate } from "react-router-dom";
 
 const TradeTable: React.FC<{
   addLogMessage: (message: string) => void;
@@ -54,14 +55,15 @@ const TradeRow: React.FC<{
 }> = ({ trade, addLogMessage }) => {
   const tradeFormat = {
     positionSize: Number(trade.positionValue).toFixed(2),
-    entry: Number(trade.avgPrice).toFixed(2),
-    marketPrice: Number(trade.markPrice).toFixed(2),
-    liqPrice: Number(trade.liqPrice).toFixed(2),
+    entry: Number(trade.avgPrice).toFixed(3),
+    marketPrice: Number(trade.markPrice).toFixed(3),
+    liqPrice: Number(trade.liqPrice).toFixed(3),
     uPnl: Number(trade.unrealisedPnl).toFixed(2),
   };
   const sideColor = trade.side === "Buy" ? "green" : "red";
   const uPnlColor = Number(trade.unrealisedPnl) > 0 ? "green" : "red";
   const textColor = "white";
+  const navigate = useNavigate();
   return (
     <Row>
       <Cell width={1} color={sideColor}>
@@ -88,7 +90,13 @@ const TradeRow: React.FC<{
       <Cell width={1}>
         <Button
           onClick={async () =>
-            handleClick("/close", addLogMessage, trade.side, trade.symbol)
+            handleClick(
+              "/close",
+              addLogMessage,
+              navigate,
+              trade.side,
+              trade.symbol
+            )
           }
         >
           Close
@@ -101,6 +109,7 @@ const TradeRow: React.FC<{
 const TradeRowHeader: React.FC<{
   addLogMessage: (message: string) => void;
 }> = ({ addLogMessage }) => {
+  const navigate = useNavigate();
   return (
     <Row>
       <Cell width={1} primary>
@@ -127,7 +136,9 @@ const TradeRowHeader: React.FC<{
       <Cell
         width={1}
         primary
-        onClick={async () => await handleClick("/closeAll", addLogMessage)}
+        onClick={async () =>
+          await handleClick("/closeAll", addLogMessage, navigate)
+        }
       >
         Close All
       </Cell>

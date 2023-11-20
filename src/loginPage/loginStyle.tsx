@@ -67,6 +67,13 @@ const Input = styled.input`
   }
 `;
 
+const ErrorStyle = styled.div`
+  display: flex;
+  text-aligns: start;
+  color: red;
+  margin-bottom: 30px;
+`;
+
 export {
   LoginContainer,
   ImageLogin,
@@ -76,4 +83,5 @@ export {
   LeftContainer,
   RightContainer,
   TextHeader,
+  ErrorStyle,
 };

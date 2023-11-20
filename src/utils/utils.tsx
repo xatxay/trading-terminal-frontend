@@ -1,19 +1,35 @@
 import { useEffect, useState } from "react";
-import { NewsData, Positions, PriceData } from "./interface";
+import { BackendData, NewsData, Positions, PriceData } from "./interface";
 import useWebSocket from "../newsHeadline/newsWebsocket";
+import { useNavigate } from "react-router-dom";
 
 const useFetch = <T,>(
-  url: string
+  url: string,
+  intervalMs: number | null = null
 ): { data: T | null; error: string | null } => {
   const [data, setData] = useState<T | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     let isMounted = true;
+    let intervalId: NodeJS.Timer | null = null;
+    const token = localStorage.getItem("token");
+    const requestOptions: RequestInit = {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
 
     const fetchData = async () => {
       try {
-        const response = await fetch(url);
+        const response = await fetch(url, requestOptions);
+        if (response.status === 401) {
+          localStorage.removeItem("token");
+          navigate("/login");
+        }
         if (!response.ok) {
           throw new Error(`Error fetching: ${response.status}`);
         }
@@ -28,18 +44,20 @@ const useFetch = <T,>(
       }
     };
     fetchData();
-    const intervalId = setInterval(fetchData, 2000);
+    if (intervalMs) {
+      intervalId = setInterval(fetchData, intervalMs);
+    }
 
     return () => {
       isMounted = false;
-      clearInterval(intervalId);
+      if (intervalId) clearInterval(intervalId);
     };
-  }, [url]);
+  }, [url, intervalMs, navigate]);
   return { data, error };
 };
 
 const useGetPosition = () => {
-  return useFetch<Positions[]>("http://localhost:5000/positions");
+  return useFetch<Positions[]>("http://localhost:5000/positions", 10000000);
 };
 
 const useExtractData = (): NewsData[] => {
@@ -134,25 +152,59 @@ const useGetPrice = (): PriceData => {
 const handleClick = async (
   endpoint: string,
   addLogMessage: (message: string) => void,
+  navigate: ReturnType<typeof useNavigate>,
   side?: string,
   symbol?: string,
   percentage?: string
 ) => {
   console.log("sss: ", side, symbol, endpoint, percentage);
   try {
+    const token = localStorage.getItem("token");
     const response = await fetch(`http://localhost:5000${endpoint}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({ side, symbol, percentage }),
     });
+    if (response.status === 401) {
+      localStorage.removeItem("token");
+      navigate("/login");
+    }
     const data = await response.json();
     addLogMessage(data.message);
     console.log(data.message);
   } catch (err) {
     console.error("Error: ", err);
     addLogMessage(`Error: ${err}`);
+  }
+};
+
+const useHandleLogin = async (
+  username: string,
+  password: string,
+  setIsAuthenticated: (isAuthenticated: boolean) => void
+): Promise<BackendData> => {
+  try {
+    const response = await fetch("http://localhost:5000/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, password }),
+    });
+
+    if (!response.ok) {
+      const errorMessage: BackendData = await response.json();
+      console.error("Login Failed: ", errorMessage.message);
+      return { token: "", message: errorMessage.message || "Login failed" };
+    }
+    setIsAuthenticated(true);
+    const { token } = await response.json();
+    localStorage.setItem("token", token);
+    return { token, message: "" };
+  } catch (err) {
+    console.error("failed logging in", err);
+    return { token: "", message: "Login request failed" };
   }
 };
 
@@ -163,4 +215,5 @@ export {
   formatDate,
   useGetPrice,
   handleClick,
+  useHandleLogin,
 };
