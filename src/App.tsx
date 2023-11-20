@@ -1,13 +1,14 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import Header from "./header/header";
 import Body from "./body/body";
-import { formatDate } from "./utils/utils";
+import { formatDate, useAutoLogout } from "./utils/utils";
 import Login from "./loginPage/login";
 import {
   BrowserRouter as Router,
   Route,
   Routes,
   Navigate,
+  useNavigate,
 } from "react-router-dom";
 
 function App() {
@@ -34,10 +35,11 @@ function App() {
           path="/"
           element={
             isAuthenticated ? (
-              <>
-                <Header addLogMessage={addLogMessage} />
-                <Body logMessages={logMessages} addLogMessage={addLogMessage} />
-              </>
+              <MainPage
+                addLogMessage={addLogMessage}
+                logMessage={logMessages}
+                setIsAuthenticated={setIsAuthenticated}
+              />
             ) : (
               <Navigate to="/login" />
             )
@@ -47,5 +49,24 @@ function App() {
     </Router>
   );
 }
+
+const MainPage: React.FC<{
+  addLogMessage: (message: string) => void;
+  logMessage: string[];
+  setIsAuthenticated: (isAuthenticated: boolean) => void;
+}> = ({ addLogMessage, logMessage, setIsAuthenticated }) => {
+  const navigate = useNavigate();
+  useAutoLogout(setIsAuthenticated, navigate);
+  return (
+    <>
+      <Header
+        addLogMessage={addLogMessage}
+        setIsAuthenticated={setIsAuthenticated}
+        navigate={navigate}
+      />
+      <Body logMessages={logMessage} addLogMessage={addLogMessage} />
+    </>
+  );
+};
 
 export default App;

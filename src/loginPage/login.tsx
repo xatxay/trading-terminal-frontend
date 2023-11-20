@@ -33,7 +33,8 @@ const LoginFormComponent: React.FC<{
   const [error, setError] = useState<string>("");
   const navigate = useNavigate();
 
-  const useLogin = async () => {
+  const useLogin = async (event: React.FormEvent) => {
+    event.preventDefault();
     const { token, message: errorMessage } = await useHandleLogin(
       username,
       password,
@@ -49,7 +50,7 @@ const LoginFormComponent: React.FC<{
 
   return (
     <>
-      <LoginFormStyled>
+      <LoginFormStyled onSubmit={useLogin}>
         <TextHeader>Irregular Trading Terminal</TextHeader>
         {error && <ErrorStyle>{error}</ErrorStyle>}
         <Input
@@ -64,7 +65,7 @@ const LoginFormComponent: React.FC<{
           placeholder="Password"
           onChange={(e) => setPassword(e.target.value)}
         />
-        <Button onClick={useLogin}>Login</Button>
+        <Button type="submit">Login</Button>
       </LoginFormStyled>
     </>
   );

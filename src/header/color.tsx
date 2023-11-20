@@ -1,6 +1,4 @@
-const gray = "#282c34";
-const textGray = "#d2d5da";
-const lightGray = "#ccc";
-const white = "white";
-
-export { gray, textGray, lightGray, white };
+export const backgroundGray = "#282c34";
+export const textGray = "#d2d5da";
+export const darkGray = "#cccccc84";
+export const orange = "#ffae42";

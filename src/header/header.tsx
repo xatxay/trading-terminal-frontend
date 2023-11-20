@@ -1,13 +1,15 @@
 import React from "react";
-import { handleClick } from "../utils/utils";
-import { Button, HeaderClass, ToggleContainer } from "./headerStyles";
-import SwitchToggle from "./modeSwitch";
+import { handleClick, handleLogout } from "../utils/utils";
+import { Button, HeaderClass } from "./headerStyles";
+// import SwitchToggle from "./modeSwitch";
 import { useNavigate } from "react-router-dom";
+import Logout from "../logout/logoutStyle";
 
-const Header: React.FC<{ addLogMessage: (message: string) => void }> = ({
-  addLogMessage,
-}) => {
-  const navigate = useNavigate();
+const Header: React.FC<{
+  addLogMessage: (message: string) => void;
+  setIsAuthenticated: (isAuthenticated: boolean) => void;
+  navigate: ReturnType<typeof useNavigate>;
+}> = ({ addLogMessage, setIsAuthenticated, navigate }) => {
   return (
     <HeaderClass>
       <p>Irregular Trading Terminal </p>
@@ -26,10 +28,9 @@ const Header: React.FC<{ addLogMessage: (message: string) => void }> = ({
       >
         Stop
       </Button>
-      <ToggleContainer>
-        <span>Manual Mode:</span>
-        <SwitchToggle />
-      </ToggleContainer>
+      <Logout onClick={() => handleLogout(setIsAuthenticated, navigate)}>
+        Logout
+      </Logout>
     </HeaderClass>
   );
 };

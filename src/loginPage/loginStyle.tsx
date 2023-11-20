@@ -1,9 +1,10 @@
 import styled from "@emotion/styled/macro";
+import { backgroundGray } from "../header/color";
 
 const LoginContainer = styled.div`
   display: flex;
   height: 100vh;
-  background-color: #282c34;
+  background-color: ${backgroundGray};
   justify-content: space-evenly;
   align-items: center;
 `;
@@ -27,7 +28,7 @@ const ImageLogin = styled.img`
   max-weight: 400px;
 `;
 
-const LoginFormStyled = styled.div`
+const LoginFormStyled = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -39,7 +40,7 @@ const Button = styled.button`
   border: none;
   border-radius: 35px;
   background-color: gray;
-  color: #282c34;
+  color: ${backgroundGray};
   cursor: pointer;
   font-size: 25px;
   &:hover {
@@ -62,7 +63,7 @@ const Input = styled.input`
   color: white;
   font-size: 20px;
   ::-webkit-input-placeholder {
-    color: #282c34;
+    color: ${backgroundGray};
     font-size: 20px;
   }
 `;

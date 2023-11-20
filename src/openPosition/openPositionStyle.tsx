@@ -1,8 +1,9 @@
 import { css } from "@emotion/react";
 import styled from "@emotion/styled/macro";
+import { darkGray, orange } from "../header/color";
 
 const Table = styled.div`
-  color: #cccccc84;
+  color: ${darkGray};
   padding: auto;
   border-radius: 10px;
 `;
@@ -22,7 +23,7 @@ const closeAllStlye = css`
   cursor: pointer;
   text-decoration: underline;
   &:hover {
-    color: #ffae42;
+    color: ${orange};
   }
 `;
 
@@ -40,7 +41,7 @@ const Cell = styled.div<{
 `;
 
 const Button = styled.button`
-  background-color: #cccccc84;
+  background-color: ${darkGray};
   color: white;
   padding: 10px 20px;
   border: none;
@@ -48,7 +49,7 @@ const Button = styled.button`
   font-weight: bold;
   cursor: pointer;
   &:hover {
-    background-color: #ffae42;
+    background-color: ${orange};
   }
 `;
 

@@ -1,4 +1,5 @@
 import styled from "@emotion/styled/macro";
+import { darkGray, orange } from "../header/color";
 
 const NewsContainer = styled.div`
   display: flex;
@@ -73,7 +74,7 @@ const ButtonSize = styled.div<{ primary?: boolean; middle?: boolean }>`
   border: ${(props) => (props.primary ? "2px solid green" : "2px solid red")};
   cursor: pointer;
   &:hover {
-    background-color: #ffae42;
+    background-color: ${orange};
   }
 `;
 
@@ -94,7 +95,7 @@ const NewsVideo = styled.video`
 `;
 
 const Time = styled.span`
-  color: #cccccc84;
+  color: ${darkGray};
   font-size: 13px;
 `;
 

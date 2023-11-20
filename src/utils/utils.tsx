@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { BackendData, NewsData, Positions, PriceData } from "./interface";
 import useWebSocket from "../newsHeadline/newsWebsocket";
 import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 
 const useFetch = <T,>(
   url: string,
@@ -198,14 +199,51 @@ const useHandleLogin = async (
       console.error("Login Failed: ", errorMessage.message);
       return { token: "", message: errorMessage.message || "Login failed" };
     }
+
     setIsAuthenticated(true);
     const { token } = await response.json();
     localStorage.setItem("token", token);
+
     return { token, message: "" };
   } catch (err) {
     console.error("failed logging in", err);
     return { token: "", message: "Login request failed" };
   }
+};
+
+const handleLogout = (
+  setIsAuthenticated: (isAuthenticated: boolean) => void,
+  navigate: ReturnType<typeof useNavigate>
+): void => {
+  console.log("logging out");
+  localStorage.removeItem("token");
+  setIsAuthenticated(false);
+  navigate("/login");
+};
+
+const useAutoLogout = (
+  setIsAuthenticated: (isAuthenticated: boolean) => void,
+  navigate: ReturnType<typeof useNavigate>
+): void => {
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      const decodedToken = jwtDecode(token);
+      const currentTime = Date.now();
+      if (decodedToken.exp && decodedToken.exp * 1000 < currentTime) {
+        handleLogout(setIsAuthenticated, navigate);
+      } else {
+        const logoutTimer = decodedToken.exp
+          ? decodedToken.exp * 1000 - currentTime
+          : null;
+        if (logoutTimer)
+          setTimeout(
+            () => handleLogout(setIsAuthenticated, navigate),
+            logoutTimer
+          );
+      }
+    }
+  }, [navigate, setIsAuthenticated]);
 };
 
 export {
@@ -216,4 +254,6 @@ export {
   useGetPrice,
   handleClick,
   useHandleLogin,
+  useAutoLogout,
+  handleLogout,
 };

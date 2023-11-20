@@ -1,4 +1,5 @@
 import styled from "@emotion/styled/macro";
+import { darkGray } from "../header/color";
 
 const AccountSummaryStyle = styled.div`
   ul {
@@ -16,11 +17,11 @@ const AccountSummaryStyle = styled.div`
 `;
 
 const LabelColor = styled.span`
-  color: #cccccc84;
+  color: ${darkGray};
 `;
 const ValueColor = styled.span`
   font-weight: bold;
-  color: #fff;
+  color: white;
   margin-left: auto;
 `;
 

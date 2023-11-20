@@ -1,9 +1,10 @@
 import styled from "@emotion/styled/macro";
+import { backgroundGray } from "../header/color";
 
 const Container = styled.div`
   display: flex;
   height: 100vh;
-  background-color: #282c34;
+  background-color: ${backgroundGray};
 `;
 
 const LeftContainer = styled.div`
