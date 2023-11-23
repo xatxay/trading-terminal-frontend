@@ -58,7 +58,7 @@ const useFetch = <T,>(
 };
 
 const useGetPosition = () => {
-  return useFetch<Positions[]>("http://localhost:5000/positions", 10000000);
+  return useFetch<Positions[]>("http://localhost:5000/positions", 1000);
 };
 
 const useExtractData = (): NewsData[] => {
@@ -142,8 +142,8 @@ const useGetPrice = (): PriceData => {
   useEffect(() => {
     if (!data) return;
     const parseData = JSON.parse(data);
-    // console.log("price: ", parseData);
-    console.log("status: ", status);
+    console.log("price: ", parseData);
+    // console.log("status: ", status);
     setTickerPercentage(parseData);
   }, [data, status]);
 
