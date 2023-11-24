@@ -58,7 +58,10 @@ const useFetch = <T,>(
 };
 
 const useGetPosition = () => {
-  return useFetch<Positions[]>("http://localhost:5000/positions", 1000);
+  return useFetch<Positions[]>(
+    String(process.env.REACT_APP_POSITION),
+    100000000
+  );
 };
 
 const useExtractData = (): NewsData[] => {
@@ -133,7 +136,7 @@ const formatDate = (timeMs?: number): string => {
 };
 
 const useGetPrice = (): PriceData => {
-  const { data, status } = useWebSocket("ws://localhost:8080");
+  const { data, status } = useWebSocket(String(process.env.REACT_APP_WS));
   const [tickerPercentage, setTickerPercentage] = useState<PriceData>({
     ticker: "",
     percentage: 0,
@@ -161,14 +164,17 @@ const handleClick = async (
   console.log("sss: ", side, symbol, endpoint, percentage);
   try {
     const token = localStorage.getItem("token");
-    const response = await fetch(`http://localhost:5000${endpoint}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({ side, symbol, percentage }),
-    });
+    const response = await fetch(
+      `${String(process.env.REACT_APP_URL)}${endpoint}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ side, symbol, percentage }),
+      }
+    );
     if (response.status === 401) {
       localStorage.removeItem("token");
       navigate("/login");
@@ -188,7 +194,7 @@ const useHandleLogin = async (
   setIsAuthenticated: (isAuthenticated: boolean) => void
 ): Promise<BackendData> => {
   try {
-    const response = await fetch("http://localhost:5000/login", {
+    const response = await fetch(String(process.env.REACT_APP_LOGIN), {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username, password }),
