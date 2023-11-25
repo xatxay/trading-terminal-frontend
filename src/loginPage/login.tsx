@@ -6,6 +6,9 @@ import {
   LoginFormStyled,
   TextHeader,
   ErrorStyle,
+  CreateAccountContainer,
+  CreateAccount,
+  Header,
 } from "./loginStyle";
 import wassie from "../loginPage/wassie-removebg-preview.png";
 import React, { useState } from "react";
@@ -48,15 +51,25 @@ const LoginFormComponent: React.FC<{
     }
   };
 
+  const redirectToRegister = (): void => {
+    navigate("/register");
+  };
+
   return (
     <>
       <LoginFormStyled onSubmit={useLogin}>
-        <TextHeader>Irregular Trading Terminal</TextHeader>
-        {error && <ErrorStyle>{error}</ErrorStyle>}
+        <Header>
+          <TextHeader>Irregular Trading Terminal</TextHeader>
+        </Header>
+        {error && (
+          <Header>
+            <ErrorStyle>{error}</ErrorStyle>
+          </Header>
+        )}
         <Input
-          id="username"
-          type="username"
-          placeholder="Username"
+          id="email"
+          type="email"
+          placeholder="Email"
           onChange={(e) => setUsername(e.target.value)}
         />
         <Input
@@ -65,7 +78,12 @@ const LoginFormComponent: React.FC<{
           placeholder="Password"
           onChange={(e) => setPassword(e.target.value)}
         />
-        <Button type="submit">Login</Button>
+        <CreateAccountContainer>
+          <Button type="submit">Login</Button>
+          <CreateAccount onClick={redirectToRegister}>
+            Create an account
+          </CreateAccount>
+        </CreateAccountContainer>
       </LoginFormStyled>
     </>
   );

@@ -10,6 +10,9 @@ import {
   Navigate,
   useNavigate,
 } from "react-router-dom";
+import Register from "./loginPage/createAccount";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   const [logMessages, setLogMessages] = useState<string[]>([]);
@@ -26,11 +29,19 @@ function App() {
 
   return (
     <Router>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        pauseOnHover
+        closeOnClick
+        closeButton
+      />
       <Routes>
         <Route
           path="/login"
           element={<Login setIsAuthenticated={setIsAuthenticated} />}
         />
+        <Route path="/register" element={<Register />} />
         <Route
           path="/"
           element={

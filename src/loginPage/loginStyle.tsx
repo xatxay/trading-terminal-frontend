@@ -31,7 +31,13 @@ const ImageLogin = styled.img`
 const LoginFormStyled = styled.form`
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
+`;
+
+const Header = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 100%;
 `;
 
 const Button = styled.button`
@@ -48,8 +54,9 @@ const Button = styled.button`
   }
 `;
 
-const TextHeader = styled.h1`
+const TextHeader = styled.h1<{ center?: boolean }>`
   color: white;
+  text-align: center;
 `;
 
 const Input = styled.input`
@@ -75,6 +82,23 @@ const ErrorStyle = styled.div`
   margin-bottom: 30px;
 `;
 
+const CreateAccountContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 100%;
+`;
+
+const CreateAccount = styled.span`
+  color: white;
+  text-decoration: underline;
+  font-size: 15px;
+  cursor: pointer;
+  &:hover {
+    color: gray;
+  }
+`;
+
 export {
   LoginContainer,
   ImageLogin,
@@ -85,4 +109,7 @@ export {
   RightContainer,
   TextHeader,
   ErrorStyle,
+  CreateAccountContainer,
+  CreateAccount,
+  Header,
 };

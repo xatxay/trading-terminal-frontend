@@ -8,6 +8,7 @@ const TradeTable: React.FC<{
   addLogMessage: (message: string) => void;
 }> = ({ addLogMessage }) => {
   const { data, error } = useGetPosition();
+  console.log("psoasda: ", data);
 
   if (error) return <p>Error: {error}</p>;
 

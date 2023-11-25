@@ -194,6 +194,7 @@ const useHandleLogin = async (
   setIsAuthenticated: (isAuthenticated: boolean) => void
 ): Promise<BackendData> => {
   try {
+    console.log(username, password);
     const response = await fetch(String(process.env.REACT_APP_LOGIN), {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -214,6 +215,22 @@ const useHandleLogin = async (
   } catch (err) {
     console.error("failed logging in", err);
     return { token: "", message: "Login request failed" };
+  }
+};
+
+const useHandleRegister = async (
+  email: string,
+  password: string
+): Promise<any> => {
+  try {
+    const response = await fetch(String(process.env.REACT_APP_REGISTER), {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
+    return response;
+  } catch (err) {
+    console.error("Failed creating an account: ", err);
   }
 };
 
@@ -262,4 +279,5 @@ export {
   useHandleLogin,
   useAutoLogout,
   handleLogout,
+  useHandleRegister,
 };
