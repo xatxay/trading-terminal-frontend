@@ -35,6 +35,7 @@ const CreateAccountForm: React.FC<{}> = () => {
   const useRegister = async (event: React.FormEvent) => {
     event.preventDefault();
     const response = await useHandleRegister(email, password);
+    console.log("register: ", response);
     if (response.ok) {
       toast.success("Account Created! Please Login");
       navigate("/login");

@@ -1,5 +1,5 @@
 import styled from "@emotion/styled/macro";
-import { textGray } from "./color";
+import { buttonGreen, buttonRed, textGray } from "./color";
 import { ButtonProps } from "../utils/interface";
 
 const Logo = styled.img({
@@ -21,7 +21,7 @@ const HeaderClass = styled.header({
 const ToggleContainer = styled.div({
   display: "flex",
   alignItems: "center",
-  gap: "10px",
+  gap: "15px",
 });
 
 const Button = styled.button<ButtonProps>`
@@ -30,7 +30,11 @@ const Button = styled.button<ButtonProps>`
   lineheight: 1;
   border-radius: 8px;
   font-weight: bold;
-  background: ${(props) => (props.primary ? "#4caf50" : "#f44336")};
+  cursor: pointer;
+  &:hover {
+    color: white;
+  }
+  background: ${(props) => (props.primary ? buttonGreen : buttonRed)};
 `;
 
 export { Logo, HeaderClass, ToggleContainer, Button };

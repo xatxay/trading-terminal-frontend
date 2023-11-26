@@ -1,9 +1,10 @@
 import React from "react";
 import { handleClick, handleLogout } from "../utils/utils";
-import { Button, HeaderClass } from "./headerStyles";
+import { Button, HeaderClass, ToggleContainer } from "./headerStyles";
 // import SwitchToggle from "./modeSwitch";
 import { useNavigate } from "react-router-dom";
-import Logout from "../logout/logoutStyle";
+import APIModal from "../apiInput/apiInputModal";
+// import Logout from "../logout/logoutStyle";
 
 const Header: React.FC<{
   addLogMessage: (message: string) => void;
@@ -28,9 +29,12 @@ const Header: React.FC<{
       >
         Stop
       </Button>
-      <Logout onClick={() => handleLogout(setIsAuthenticated, navigate)}>
-        Logout
-      </Logout>
+      <ToggleContainer>
+        <APIModal />
+        <Button onClick={() => handleLogout(setIsAuthenticated, navigate)}>
+          Logout
+        </Button>
+      </ToggleContainer>
     </HeaderClass>
   );
 };

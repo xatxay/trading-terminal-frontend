@@ -189,17 +189,18 @@ const handleClick = async (
 };
 
 const useHandleLogin = async (
-  username: string,
+  email: string,
   password: string,
   setIsAuthenticated: (isAuthenticated: boolean) => void
 ): Promise<BackendData> => {
   try {
-    console.log(username, password);
+    console.log(email, password);
     const response = await fetch(String(process.env.REACT_APP_LOGIN), {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, password }),
+      body: JSON.stringify({ email, password }),
     });
+    console.log("loginResponse: ", response);
 
     if (!response.ok) {
       const errorMessage: BackendData = await response.json();
@@ -209,12 +210,34 @@ const useHandleLogin = async (
 
     setIsAuthenticated(true);
     const { token } = await response.json();
+    localStorage.setItem("email", email);
     localStorage.setItem("token", token);
 
     return { token, message: "" };
   } catch (err) {
     console.error("failed logging in", err);
     return { token: "", message: "Login request failed" };
+  }
+};
+
+const useHandleApi = async (
+  email: string,
+  apiKey: string,
+  apiSecret: string
+) => {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await fetch(String(process.env.REACT_APP_USERAPI), {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ email, apiKey, apiSecret }),
+    });
+    return response;
+  } catch (err) {
+    console.log("Error submitting api: ", err);
   }
 };
 
@@ -240,6 +263,7 @@ const handleLogout = (
 ): void => {
   console.log("logging out");
   localStorage.removeItem("token");
+  localStorage.removeItem("email");
   setIsAuthenticated(false);
   navigate("/login");
 };
@@ -280,4 +304,5 @@ export {
   useAutoLogout,
   handleLogout,
   useHandleRegister,
+  useHandleApi,
 };
