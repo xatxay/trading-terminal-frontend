@@ -1,5 +1,5 @@
 import styled from "@emotion/styled/macro";
-import { darkGray, orange } from "../header/color";
+import { darkGray, orange, buttonGreen, buttonRed } from "../header/color";
 
 const NewsContainer = styled.div`
   display: flex;
@@ -67,12 +67,15 @@ const NewsBody = styled.a`
 `;
 
 const ButtonSize = styled.div<{ primary?: boolean; middle?: boolean }>`
-  color: white;
+  color: black;
   padding: 10px 40px;
   border-radius: 5px;
   font-size: 15px;
-  border: ${(props) => (props.primary ? "2px solid green" : "2px solid red")};
+  border: ${(props) => (props.middle ? `2px solid ${darkGray}` : "none")};
+  background-color: ${(props) =>
+    props.primary ? buttonGreen : props.middle ? "none" : buttonRed};
   cursor: pointer;
+  font-weight: bold;
   &:hover {
     background-color: ${orange};
   }

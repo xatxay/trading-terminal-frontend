@@ -2,7 +2,7 @@ import styled from "@emotion/styled/macro";
 import { backgroundGray } from "../header/color";
 
 const ApiInput = styled.input`
-  padding: 15px;
+  padding: 15px 30px;
   background-color: gray;
   border: none;
   border-radius: 5px;
@@ -45,9 +45,13 @@ const IconStyle = styled.div`
   justify-content: center;
 `;
 
-const ApiText = styled.h3`
+const ApiText = styled.h3<{ chatgpt?: boolean }>`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
   color: white;
-  margin-bottom: 30px;
+  margin-bottom: ${(props) => (props.chatgpt ? "5px" : "30px")};
 `;
 
 export { ApiInput, ApiText, SubmitButton, SavedApi, IconStyle };

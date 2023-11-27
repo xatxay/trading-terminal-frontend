@@ -39,3 +39,11 @@
 .eye {
   margin-right: 10px;
 }
+
+.dropdown {
+  color: gray;
+  cursor: pointer;
+  &:hover {
+    color: white;
+  }
+}

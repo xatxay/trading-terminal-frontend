@@ -14,12 +14,14 @@ import { toast } from "react-toastify";
 import { BiSolidEdit } from "react-icons/bi";
 import { IoMdEye, IoMdEyeOff } from "react-icons/io";
 import { ApiData } from "../utils/interface";
+import DropdownMenu from "./dropdownMenu";
 
 ReactModal.setAppElement("#root");
 
 const APIModal: React.FC<{}> = () => {
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
   const [apiDataExists, setApiDataExists] = useState<boolean>(false);
+  // const [selectedApi, setSelectedApi] = useState<"bybit" | "openai">("bybit");
   const email = localStorage.getItem("email");
 
   const openModal = async () => {
@@ -57,9 +59,9 @@ const APIModal: React.FC<{}> = () => {
   );
 };
 
-const SubmitApiComponet: React.FC<{ closeModal: () => void }> = ({
-  closeModal,
-}) => {
+const SubmitApiComponet: React.FC<{
+  closeModal: () => void;
+}> = ({ closeModal }) => {
   const [apiKey, setApiKey] = useState<string>("");
   const [apiSecret, setApiSecret] = useState<string>("");
 
@@ -75,9 +77,13 @@ const SubmitApiComponet: React.FC<{ closeModal: () => void }> = ({
       toast.error("Failed updating API");
     }
   };
+
   return (
     <>
-      <ApiText>Enter Your Bybit API</ApiText>
+      <ApiText>
+        Enter Your Bybit API
+        <DropdownMenu />
+      </ApiText>
       <ApiInput
         id="apiKey"
         type="password"

@@ -98,3 +98,9 @@ export interface ApiData {
   apiKey?: string;
   apiSecret?: string;
 }
+
+export interface SubmitApiComponetType {
+  closeModal: () => void;
+  selectedApi: "bybit" | "openai";
+  setSelectedApi: (api: "bybit" | "openai") => void;
+}

@@ -52,7 +52,7 @@ const NewsButtons: React.FC<{
           )
         }
       >
-        75%
+        $1000
       </ButtonSize>
       <ButtonSize
         onClick={async () =>
@@ -66,9 +66,9 @@ const NewsButtons: React.FC<{
           )
         }
       >
-        25%
+        $500
       </ButtonSize>
-      <ButtonSize primary>
+      <ButtonSize middle>
         {coin}{" "}
         {percentage !== undefined && (
           <Percentage positive={percentage > 0}>{percentage}%</Percentage>
@@ -87,7 +87,7 @@ const NewsButtons: React.FC<{
           )
         }
       >
-        25%
+        $500
       </ButtonSize>
       <ButtonSize
         primary
@@ -102,7 +102,7 @@ const NewsButtons: React.FC<{
           )
         }
       >
-        75%
+        $1000
       </ButtonSize>
     </ButtonContainer>
   );
