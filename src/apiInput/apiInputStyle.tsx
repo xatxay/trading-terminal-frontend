@@ -26,9 +26,28 @@ const SubmitButton = styled.button`
   }
 `;
 
+const SavedApi = styled.div`
+  height: 50px;
+  width: 500px;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: none;
+  background-color: black;
+  color: white;
+  margin-bottom: 30px;
+`;
+
+const IconStyle = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 const ApiText = styled.h3`
   color: white;
   margin-bottom: 30px;
 `;
 
-export { ApiInput, ApiText, SubmitButton };
+export { ApiInput, ApiText, SubmitButton, SavedApi, IconStyle };

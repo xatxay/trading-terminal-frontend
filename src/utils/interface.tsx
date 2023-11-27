@@ -93,3 +93,8 @@ export interface RequestOptions {
   };
   body?: string;
 }
+
+export interface ApiData {
+  apiKey?: string;
+  apiSecret?: string;
+}

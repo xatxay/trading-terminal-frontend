@@ -293,6 +293,28 @@ const useAutoLogout = (
   }, [navigate, setIsAuthenticated]);
 };
 
+const checkSubmittedApi = async (email: string): Promise<any> => {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await fetch(String(process.env.REACT_APP_USERAPICHECK), {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ email }),
+    });
+    if (!response.ok) {
+      throw new Error("Please enter your api key in the settings");
+    }
+    const data = await response.json();
+    console.log("checkapi: ", response);
+    return data;
+  } catch (err) {
+    console.log("Failed checking user submitted API: ", err);
+  }
+};
+
 export {
   useFetch,
   useGetPosition,
@@ -305,4 +327,5 @@ export {
   handleLogout,
   useHandleRegister,
   useHandleApi,
+  checkSubmittedApi,
 };

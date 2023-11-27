@@ -26,3 +26,16 @@
 .ReactModal__Html--open {
   overflow: hidden;
 }
+
+.eye,
+.edit {
+  color: gray;
+  cursor: pointer;
+  &:hover {
+    color: white;
+  }
+}
+
+.eye {
+  margin-right: 10px;
+}
