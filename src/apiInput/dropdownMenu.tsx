@@ -1,8 +1,9 @@
 import { IoIosArrowDropdown } from "react-icons/io";
 import { useState } from "react";
 import { DropdownBox, DropdownItems, MenuButton } from "./dropdownMenuStyle";
+import { SelectDropdown } from "../utils/interface";
 
-const DropdownMenu: React.FC = () => {
+const DropdownMenu: React.FC<SelectDropdown> = ({ onSelect }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const toggleDropdown = () => setIsOpen(!isOpen);
@@ -18,15 +19,11 @@ const DropdownMenu: React.FC = () => {
         <DropdownItems>
           <DropdownBox>
             <ul>
-              <MenuButton>
-                <li>
-                  <a href="#bybit-api">Bybit API</a>
-                </li>
+              <MenuButton onClick={() => onSelect("bybit")}>
+                <li>Bybit API</li>
               </MenuButton>
-              <MenuButton>
-                <li>
-                  <a href="#openai-api">OpenAI API</a>
-                </li>
+              <MenuButton onClick={() => onSelect("openai")}>
+                <li>OpenAI API</li>
               </MenuButton>
             </ul>
           </DropdownBox>

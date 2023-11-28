@@ -19,13 +19,9 @@ const MenuButton = styled.button`
   border: none;
   padding: 1rem;
   font-weight: bold;
+  cursor: pointer;
   &:hover {
     background-color: ${darkGray};
-  }
-  a {
-    color: inherit;
-    text-decoration: none;
-    display: block;
   }
 `;
 

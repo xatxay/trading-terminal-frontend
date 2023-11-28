@@ -9,29 +9,59 @@ import {
   SavedApi,
   SubmitButton,
 } from "./apiInputStyle";
-import { checkSubmittedApi, useHandleApi } from "../utils/utils";
+import { checkSubmittedApi, handleBybitApi } from "../utils/utils";
 import { toast } from "react-toastify";
 import { BiSolidEdit } from "react-icons/bi";
 import { IoMdEye, IoMdEyeOff } from "react-icons/io";
-import { ApiData } from "../utils/interface";
+import { ApiData, ExistModal, SelectDropdown } from "../utils/interface";
 import DropdownMenu from "./dropdownMenu";
+import SubmitChatGptApi from "./chatgptApi";
 
 ReactModal.setAppElement("#root");
 
 const APIModal: React.FC<{}> = () => {
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
   const [apiDataExists, setApiDataExists] = useState<boolean>(false);
-  // const [selectedApi, setSelectedApi] = useState<"bybit" | "openai">("bybit");
+  const [openaiDataExist, setOpenaiDataExist] = useState<boolean>(false);
+  const [selectedApi, setSelectedApi] = useState<"bybit" | "openai" | "">("");
+  const [isEditting, setIsEditting] = useState<boolean>(false);
+  const [isEdittingOpenAi, setIsEdittingOpenAi] = useState<boolean>(false);
   const email = localStorage.getItem("email");
 
   const openModal = async () => {
     setModalIsOpen(true);
-    const isExist = await checkSubmittedApi(email || "");
+    setSelectedApi("");
+    const isExist = await checkSubmittedApi(
+      email || "",
+      process.env.REACT_APP_USERAPICHECK || ""
+    );
+    const openAiExist = await checkSubmittedApi(
+      email || "",
+      process.env.REACT_APP_USER_OPENAI_API_CHECK || ""
+    );
+    console.log("openaiexist: ", openAiExist);
     setApiDataExists(isExist);
+    setOpenaiDataExist(openAiExist);
   };
 
   const closeModal = () => {
     setModalIsOpen(false);
+  };
+
+  const handleApiSelection = (api: "bybit" | "openai" | "") => {
+    setSelectedApi(api);
+    setIsEditting(false);
+    setIsEdittingOpenAi(false);
+  };
+
+  const toggleEditButton = () => {
+    setIsEditting(!isEditting);
+    setSelectedApi("");
+  };
+
+  const toggleOpenAiEditButton = () => {
+    setIsEdittingOpenAi(!isEdittingOpenAi);
+    setSelectedApi("");
   };
 
   return (
@@ -49,30 +79,45 @@ const APIModal: React.FC<{}> = () => {
         className="apiModal"
         overlayClassName="apiOverlay"
       >
-        {apiDataExists ? (
-          <ExistApiModal closeModal={closeModal} />
+        {selectedApi === "bybit" ? (
+          <SubmitApiComponet onSelect={handleApiSelection} />
+        ) : selectedApi === "openai" ? (
+          <SubmitChatGptApi onSelect={handleApiSelection} />
+        ) : apiDataExists || openaiDataExist ? (
+          <ExistApiModal
+            closeModal={closeModal}
+            onSelect={handleApiSelection}
+            isEditting={isEditting}
+            isEdittingOpenAi={isEdittingOpenAi}
+            toggleIsEditting={toggleEditButton}
+            toggleIsEdittingOpenAi={toggleOpenAiEditButton}
+          />
         ) : (
-          <SubmitApiComponet closeModal={closeModal} />
+          <SubmitApiComponet onSelect={handleApiSelection} />
         )}
       </ReactModal>
     </>
   );
 };
 
-const SubmitApiComponet: React.FC<{
-  closeModal: () => void;
-}> = ({ closeModal }) => {
+const SubmitApiComponet: React.FC<SelectDropdown> = ({ onSelect }) => {
   const [apiKey, setApiKey] = useState<string>("");
   const [apiSecret, setApiSecret] = useState<string>("");
 
   const useApi = async (event: React.FormEvent) => {
     event.preventDefault();
+    if (!apiKey.trim() && !apiSecret.trim()) {
+      toast.error("API is required");
+      return;
+    }
     const email = localStorage.getItem("email") || "";
-    const response = await useHandleApi(email, apiKey, apiSecret);
+    const response = await handleBybitApi(email, apiKey, apiSecret);
     console.log("submitting: ", response);
     if (response && response.ok) {
       toast.success("Updated API successful!");
-      closeModal();
+      setApiKey("");
+      setApiSecret("");
+      onSelect("");
     } else {
       toast.error("Failed updating API");
     }
@@ -82,36 +127,54 @@ const SubmitApiComponet: React.FC<{
     <>
       <ApiText>
         Enter Your Bybit API
-        <DropdownMenu />
+        <DropdownMenu onSelect={onSelect} />
       </ApiText>
       <ApiInput
         id="apiKey"
         type="password"
         placeholder="API KEY"
+        value={apiKey}
         onChange={(e) => setApiKey(e.target.value)}
+        required
       />
       <ApiInput
         id="apiSecret"
         type="password"
         placeholder="API SECRET"
+        value={apiSecret}
         onChange={(e) => setApiSecret(e.target.value)}
+        required
       />
       <SubmitButton onClick={useApi}>Save</SubmitButton>
     </>
   );
 };
 
-const ExistApiModal: React.FC<{ closeModal: () => void }> = ({
+const ExistApiModal: React.FC<ExistModal> = ({
   closeModal,
+  onSelect,
+  isEditting,
+  isEdittingOpenAi,
+  toggleIsEditting,
+  toggleIsEdittingOpenAi,
 }) => {
   const [apiData, setApiData] = useState<ApiData>({});
+  const [openAiData, setOpenAiData] = useState<string>("");
+  const [showOpenAiData, setShowOpenAiData] = useState<boolean>(false);
   const [showApiData, setShowApiData] = useState<boolean>(false);
-  const [isEditting, setIsEditting] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchApiData = async () => {
       const email = localStorage.getItem("email");
-      const data = await checkSubmittedApi(email || "");
+      const data = await checkSubmittedApi(
+        email || "",
+        process.env.REACT_APP_USERAPICHECK || ""
+      );
+      const dataOpenAi = await checkSubmittedApi(
+        email || "",
+        process.env.REACT_APP_USER_OPENAI_API_CHECK || ""
+      );
+      if (dataOpenAi) setOpenAiData(dataOpenAi.openAi);
       if (data) setApiData(data);
     };
     fetchApiData();
@@ -121,31 +184,53 @@ const ExistApiModal: React.FC<{ closeModal: () => void }> = ({
     setShowApiData(!showApiData);
   };
 
-  const toggleEditButton = () => {
-    setIsEditting(!isEditting);
-  };
-
+  console.log("apidata: ", apiData);
   return (
     <>
       {isEditting ? (
-        <SubmitApiComponet closeModal={closeModal} />
+        <SubmitApiComponet onSelect={onSelect} />
+      ) : isEdittingOpenAi ? (
+        <SubmitChatGptApi onSelect={onSelect} />
       ) : (
         <>
           <ApiText>Saved API</ApiText>
           <SavedApi>
-            API Key: {showApiData ? apiData?.apiKey : "••••••••••"}
+            API Key:{" "}
+            {!apiData || !apiData.apiKey
+              ? "Please input your Bybit API in the setting"
+              : apiData && showApiData
+              ? apiData?.apiKey
+              : "••••••••••"}
             <Icons
               toggleApiView={toggleApiView}
               showApiData={showApiData}
-              toggleEditButton={toggleEditButton}
+              toggleEditButton={toggleIsEditting}
             />
           </SavedApi>
           <SavedApi>
-            API Secret: {showApiData ? apiData?.apiSecret : "••••••••••"}
+            API Secret:{" "}
+            {!apiData || !apiData.apiSecret
+              ? "Please input your Bybit API in the setting"
+              : apiData && showApiData
+              ? apiData?.apiSecret
+              : "••••••••••"}
             <Icons
               toggleApiView={toggleApiView}
               showApiData={showApiData}
-              toggleEditButton={toggleEditButton}
+              toggleEditButton={toggleIsEditting}
+            />
+          </SavedApi>
+          <SavedApi>
+            OpenAI API:{" "}
+            {!openAiData
+              ? "Please input your OpenAi API in the setting"
+              : openAiData && showOpenAiData
+              ? openAiData
+              : "••••••••••"}
+            <Icons
+              toggleApiView={() => setShowOpenAiData(!showOpenAiData)}
+              showApiData={showOpenAiData}
+              toggleEditButton={toggleIsEdittingOpenAi}
             />
           </SavedApi>
           <SubmitButton onClick={closeModal}>Close</SubmitButton>

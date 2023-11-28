@@ -220,7 +220,7 @@ const useHandleLogin = async (
   }
 };
 
-const useHandleApi = async (
+const handleBybitApi = async (
   email: string,
   apiKey: string,
   apiSecret: string
@@ -237,7 +237,27 @@ const useHandleApi = async (
     });
     return response;
   } catch (err) {
-    console.log("Error submitting api: ", err);
+    console.log("Error submitting bybit api: ", err);
+  }
+};
+
+const handleOpenAiApi = async (email: string, openAiApi: string) => {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await fetch(
+      String(process.env.REACT_APP_USER_OPENAI_API),
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ email, openAiApi }),
+      }
+    );
+    return response;
+  } catch (err) {
+    console.error("Error submitting openai api: ", err);
   }
 };
 
@@ -293,10 +313,13 @@ const useAutoLogout = (
   }, [navigate, setIsAuthenticated]);
 };
 
-const checkSubmittedApi = async (email: string): Promise<any> => {
+const checkSubmittedApi = async (
+  email: string,
+  endpoint: string
+): Promise<any> => {
   try {
     const token = localStorage.getItem("token");
-    const response = await fetch(String(process.env.REACT_APP_USERAPICHECK), {
+    const response = await fetch(String(endpoint), {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -326,6 +349,7 @@ export {
   useAutoLogout,
   handleLogout,
   useHandleRegister,
-  useHandleApi,
+  handleBybitApi,
   checkSubmittedApi,
+  handleOpenAiApi,
 };

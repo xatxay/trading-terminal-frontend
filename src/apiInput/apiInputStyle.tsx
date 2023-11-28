@@ -21,6 +21,7 @@ const SubmitButton = styled.button`
   border: none;
   border-radius: 10px;
   font-weight: bold;
+  margin-bottom: 15px;
   &:hover {
     background-color: white;
   }
@@ -51,7 +52,14 @@ const ApiText = styled.h3<{ chatgpt?: boolean }>`
   align-items: center;
   justify-content: center;
   color: white;
-  margin-bottom: ${(props) => (props.chatgpt ? "5px" : "30px")};
+  margin-bottom: ${(props) => (props.chatgpt ? "5px" : "25px")};
 `;
 
-export { ApiInput, ApiText, SubmitButton, SavedApi, IconStyle };
+const ExistContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+`;
+
+export { ApiInput, ApiText, SubmitButton, SavedApi, IconStyle, ExistContainer };

@@ -71,9 +71,9 @@ const ButtonSize = styled.div<{ primary?: boolean; middle?: boolean }>`
   padding: 10px 40px;
   border-radius: 5px;
   font-size: 15px;
-  border: ${(props) => (props.middle ? `2px solid ${darkGray}` : "none")};
+  border: none;
   background-color: ${(props) =>
-    props.primary ? buttonGreen : props.middle ? "none" : buttonRed};
+    props.primary ? buttonGreen : props.middle ? darkGray : buttonRed};
   cursor: pointer;
   font-weight: bold;
   &:hover {

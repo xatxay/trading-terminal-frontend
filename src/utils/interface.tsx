@@ -99,8 +99,14 @@ export interface ApiData {
   apiSecret?: string;
 }
 
-export interface SubmitApiComponetType {
-  closeModal: () => void;
-  selectedApi: "bybit" | "openai";
-  setSelectedApi: (api: "bybit" | "openai") => void;
+export interface SelectDropdown {
+  closeModal?: () => void;
+  onSelect: (api: "bybit" | "openai" | "") => void;
+}
+
+export interface ExistModal extends SelectDropdown {
+  isEditting: boolean;
+  isEdittingOpenAi: boolean;
+  toggleIsEditting: () => void;
+  toggleIsEdittingOpenAi: () => void;
 }
