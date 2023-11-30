@@ -24,14 +24,13 @@ const useFetch = <T,>(
       };
 
       const response = await fetch(url, requestOptions);
-      // console.log("usefetch response: ", response);
       if (response.status === 401) {
         localStorage.removeItem("token");
         navigate("/login");
       }
       if (!response.ok) {
         throw new Error(
-          `Error fetching: ${response.status} ${response.statusText} (Double check your api key)`
+          `Error fetching: ${response.status} ${response.statusText}`
         );
       }
       const jsonData = await response.json();
@@ -49,6 +48,7 @@ const useFetch = <T,>(
       intervalId = setInterval(fetchData, intervalMs);
     }
     return () => {
+      console.log("cleaning up");
       if (intervalId) clearInterval(intervalId);
     };
   }, [fetchData, intervalMs]);
@@ -84,7 +84,6 @@ const useExtractData = (): NewsData[] => {
       if (parseData.source) {
         const blogTitle = parseData.title.match(/^([A-Z\s\\.\\-]+:)/) || [];
         newsData.title = blogTitle[0] ? blogTitle[0].trim() : "";
-        console.log("BLOGTITLE: ", blogTitle);
         newsData.newsHeadline = newsData.title
           ? parseData.title.substring(newsData.title.length).trim()
           : parseData.title;
@@ -94,7 +93,6 @@ const useExtractData = (): NewsData[] => {
           ? parseData.title.match(/@([A-Za-z0-9_]+)/)
           : "";
         newsData.title = twitterTitle[1];
-        console.log("TWITTERTITLE: ", newsData.title);
         newsData.newsHeadline = parseData.body;
         newsData.link = parseData.link;
       }
@@ -114,7 +112,7 @@ const useExtractData = (): NewsData[] => {
         return newMessages;
       });
 
-      console.log("staus: ", status);
+      console.log("status: ", status);
       console.log("socket: ", parseData);
     }
   }, [data, status]);
@@ -142,7 +140,6 @@ const useGetPrice = (): PriceData => {
     if (!data) return;
     const parseData = JSON.parse(data);
     console.log("price: ", parseData);
-    // console.log("status: ", status);
     setTickerPercentage(parseData);
   }, [data, status]);
 
@@ -327,7 +324,7 @@ const checkSubmittedApi = async (
       throw new Error("Please enter your api key in the settings");
     }
     const data = await response.json();
-    console.log("checkapi: ", response);
+    console.log("check submitted api ");
     return data;
   } catch (err) {
     console.log("Failed checking user submitted API: ", err);

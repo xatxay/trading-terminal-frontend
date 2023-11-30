@@ -10,9 +10,6 @@ const Container = styled.div`
 const LeftContainer = styled.div`
   flex: 1;
   overflow: auto;
-  &::-webkit-scrollbar {
-    display: none;
-  }
 `;
 
 const RightContainer = styled.div`

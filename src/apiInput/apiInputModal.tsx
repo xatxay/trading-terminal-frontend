@@ -41,7 +41,7 @@ const APIModal: React.FC<{}> = () => {
       email || "",
       process.env.REACT_APP_USER_OPENAI_API_CHECK || ""
     );
-    console.log("openaiexist: ", openAiExist);
+    console.log("openaiexist ");
     setApiDataExists(isExist);
     setOpenaiDataExist(openAiExist);
   };
@@ -192,7 +192,6 @@ const ExistApiModal: React.FC<ExistModal> = ({
     setShowApiData(!showApiData);
   };
 
-  console.log("apidata: ", apiData);
   return (
     <>
       {isEditting ? (

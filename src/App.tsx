@@ -14,6 +14,8 @@ import Register from "./loginPage/createAccount";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { BybitApiProvider } from "./apiContext/apiContext";
+import { Global } from "@emotion/react";
+import globalScrollbarStyle from "./scrollbar/scrollbar";
 
 function App() {
   const [logMessages, setLogMessages] = useState<string[]>([]);
@@ -29,38 +31,41 @@ function App() {
   console.log(isAuthenticated);
 
   return (
-    <BybitApiProvider>
-      <Router>
-        <ToastContainer
-          position="top-right"
-          autoClose={3000}
-          pauseOnHover
-          closeOnClick
-          closeButton
-        />
-        <Routes>
-          <Route
-            path="/login"
-            element={<Login setIsAuthenticated={setIsAuthenticated} />}
+    <>
+      <Global styles={globalScrollbarStyle} />
+      <BybitApiProvider>
+        <Router>
+          <ToastContainer
+            position="top-right"
+            autoClose={3000}
+            pauseOnHover
+            closeOnClick
+            closeButton
           />
-          <Route path="/register" element={<Register />} />
-          <Route
-            path="/"
-            element={
-              isAuthenticated ? (
-                <MainPage
-                  addLogMessage={addLogMessage}
-                  logMessage={logMessages}
-                  setIsAuthenticated={setIsAuthenticated}
-                />
-              ) : (
-                <Navigate to="/login" />
-              )
-            }
-          />
-        </Routes>
-      </Router>
-    </BybitApiProvider>
+          <Routes>
+            <Route
+              path="/login"
+              element={<Login setIsAuthenticated={setIsAuthenticated} />}
+            />
+            <Route path="/register" element={<Register />} />
+            <Route
+              path="/"
+              element={
+                isAuthenticated ? (
+                  <MainPage
+                    addLogMessage={addLogMessage}
+                    logMessage={logMessages}
+                    setIsAuthenticated={setIsAuthenticated}
+                  />
+                ) : (
+                  <Navigate to="/login" />
+                )
+              }
+            />
+          </Routes>
+        </Router>
+      </BybitApiProvider>
+    </>
   );
 }
 

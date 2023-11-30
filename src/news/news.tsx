@@ -145,7 +145,7 @@ const NewsHeadline: React.FC<{ addLogMessage: (message: string) => void }> = ({
       {messages.map((message) => (
         <NewsContainer key={message._id}>
           <HeaderContainer>
-            <NewsHeadlineStyle>{message.title}</NewsHeadlineStyle>
+            <NewsHeadlineStyle>{message.title.toUpperCase()}</NewsHeadlineStyle>
             <Time>{formatDate(message.time)}</Time>
           </HeaderContainer>
           <NewsText>

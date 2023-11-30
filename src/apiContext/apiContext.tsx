@@ -23,9 +23,7 @@ export const BybitApiProvider: React.FC<{ children: ReactNode }> = ({
 
   const updateApiKeys = (newKeys: ApiData) => {
     setBybitApi(newKeys);
-    console.log("newkeys: ", newKeys);
   };
-  console.log("context: ", bybitApi);
 
   return (
     <BybitApiContext.Provider value={{ bybitApi, updateApiKeys }}>

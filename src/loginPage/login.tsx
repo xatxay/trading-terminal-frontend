@@ -38,7 +38,7 @@ const LoginFormComponent: React.FC<{
 
   const useLogin = async (event: React.FormEvent) => {
     event.preventDefault();
-    const { token, message: errorMessage } = await useHandleLogin(
+    const { message: errorMessage } = await useHandleLogin(
       username,
       password,
       setIsAuthenticated
@@ -46,7 +46,6 @@ const LoginFormComponent: React.FC<{
     if (errorMessage) {
       setError(errorMessage);
     } else {
-      console.log("token: ", token);
       navigate("/");
     }
   };

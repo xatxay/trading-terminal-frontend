@@ -14,15 +14,12 @@ const TradeTable: React.FC<{
     10000
   );
   const { bybitApi } = useApiKeys();
-  // console.log("psoasda: ", data);
-  // console.log("tradetable: ", bybitApi);
+  console.log("position: ", data);
 
   useEffect(() => {
-    console.log("triggering ");
     refetch();
   }, [refetch, bybitApi]);
 
-  console.log("error: ", error);
   if (error) return <ErrorStyle>{error}</ErrorStyle>;
 
   const positions =
@@ -31,7 +28,7 @@ const TradeTable: React.FC<{
         symbol,
         leverage,
         avgPrice,
-        liqPrice,
+        stopLoss,
         positionValue,
         unrealisedPnl,
         markPrice,
@@ -40,13 +37,13 @@ const TradeTable: React.FC<{
         symbol,
         leverage,
         avgPrice,
-        liqPrice,
+        stopLoss,
         positionValue,
         unrealisedPnl,
         markPrice,
         side,
       })
-    ) ?? [];
+    ) ?? []; //destructure only the value needed
   return (
     <Table>
       <TradeRowHeader addLogMessage={addLogMessage} />
@@ -71,7 +68,7 @@ const TradeRow: React.FC<{
     positionSize: Number(trade.positionValue).toFixed(2),
     entry: Number(trade.avgPrice).toFixed(3),
     marketPrice: Number(trade.markPrice).toFixed(3),
-    liqPrice: Number(trade.liqPrice).toFixed(3),
+    stopLoss: Number(trade.stopLoss).toFixed(3),
     uPnl: Number(trade.unrealisedPnl).toFixed(2),
   };
   const sideColor = trade.side === "Buy" ? "green" : "red";
@@ -96,7 +93,7 @@ const TradeRow: React.FC<{
         {tradeFormat.marketPrice}
       </Cell>
       <Cell width={1} color={textColor}>
-        {tradeFormat.liqPrice}
+        {tradeFormat.stopLoss}
       </Cell>
       <Cell width={1} color={uPnlColor}>
         {tradeFormat.uPnl}
@@ -142,7 +139,7 @@ const TradeRowHeader: React.FC<{
         Price
       </Cell>
       <Cell width={1} primary>
-        Liq Price
+        SL
       </Cell>
       <Cell width={1} primary>
         PNL

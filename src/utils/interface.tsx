@@ -19,7 +19,7 @@ export interface Positions {
   symbol: string;
   leverage: string;
   avgPrice: string;
-  liqPrice: string;
+  stopLoss: string;
   positionValue: string;
   unrealisedPnl: string;
   markPrice: string;

@@ -35,6 +35,8 @@ const Cell = styled.div<{
 }>`
   flex: ${(props) => props.width};
   text-align: center;
+  overflow: hidden;
+  padding: 0 10px;
   color: ${(props) => props.color || "inherit"};
   font-weight: ${(props) => (props.primary ? "bold" : "normal")};
   ${(props) => props.onClick && closeAllStlye}
