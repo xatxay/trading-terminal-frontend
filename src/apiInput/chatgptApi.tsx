@@ -1,6 +1,11 @@
 import { toast } from "react-toastify";
 import { handleOpenAiApi } from "../utils/utils";
-import { ApiInput, ApiText, SubmitButton } from "./apiInputStyle";
+import {
+  ApiInput,
+  ApiText,
+  ExistContainer,
+  SubmitButton,
+} from "./apiInputStyle";
 import DropdownMenu from "./dropdownMenu";
 import React, { useState } from "react";
 import { SelectDropdown } from "../utils/interface";
@@ -27,7 +32,7 @@ const SubmitChatGptApi: React.FC<SelectDropdown> = ({ onSelect }) => {
   };
 
   return (
-    <>
+    <ExistContainer onSubmit={useOpenAi}>
       <ApiText chatgpt>
         Enter Your OpenAI API <DropdownMenu onSelect={onSelect} />
       </ApiText>
@@ -40,8 +45,8 @@ const SubmitChatGptApi: React.FC<SelectDropdown> = ({ onSelect }) => {
         onChange={(e) => setOpenAiApi(e.target.value)}
         required
       />
-      <SubmitButton onClick={useOpenAi}>Save</SubmitButton>
-    </>
+      <SubmitButton type="submit">Save</SubmitButton>
+    </ExistContainer>
   );
 };
 

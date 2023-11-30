@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { BackendData, NewsData, Positions, PriceData } from "./interface";
+import { useCallback, useEffect, useState } from "react";
+import { BackendData, NewsData, PriceData } from "./interface";
 import useWebSocket from "../newsHeadline/newsWebsocket";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
@@ -7,62 +7,58 @@ import { jwtDecode } from "jwt-decode";
 const useFetch = <T,>(
   url: string,
   intervalMs: number | null = null
-): { data: T | null; error: string | null } => {
+): { data: T | null; error: string | null; refetch: () => Promise<void> } => {
   const [data, setData] = useState<T | null>(null);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    let isMounted = true;
-    let intervalId: NodeJS.Timer | null = null;
-    const token = localStorage.getItem("token");
-    const requestOptions: RequestInit = {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    };
+  const fetchData = useCallback(async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const requestOptions: RequestInit = {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      };
 
-    const fetchData = async () => {
-      try {
-        const response = await fetch(url, requestOptions);
-        if (response.status === 401) {
-          localStorage.removeItem("token");
-          navigate("/login");
-        }
-        if (!response.ok) {
-          throw new Error(`Error fetching: ${response.status}`);
-        }
-        const jsonData = await response.json();
-        if (isMounted) {
-          setData(jsonData);
-        }
-      } catch (err) {
-        if (isMounted) {
-          setError((err as Error).message);
-        }
+      const response = await fetch(url, requestOptions);
+      // console.log("usefetch response: ", response);
+      if (response.status === 401) {
+        localStorage.removeItem("token");
+        navigate("/login");
       }
-    };
+      if (!response.ok) {
+        throw new Error(
+          `Error fetching: ${response.status} ${response.statusText} (Double check your api key)`
+        );
+      }
+      const jsonData = await response.json();
+      setData(jsonData);
+      setError("");
+    } catch (err) {
+      setError((err as Error).message);
+    }
+  }, [navigate, url]);
+
+  useEffect(() => {
+    let intervalId: NodeJS.Timer | null = null;
     fetchData();
     if (intervalMs) {
       intervalId = setInterval(fetchData, intervalMs);
     }
-
     return () => {
-      isMounted = false;
       if (intervalId) clearInterval(intervalId);
     };
-  }, [url, intervalMs, navigate]);
-  return { data, error };
+  }, [fetchData, intervalMs]);
+
+  return { data, error, refetch: fetchData };
 };
 
-const useGetPosition = () => {
-  return useFetch<Positions[]>(
-    String(process.env.REACT_APP_POSITION),
-    100000000
-  );
-};
+// const useGetPosition = () => {
+//   return useFetch<Positions[]>(String(process.env.REACT_APP_POSITION), 10000);
+// };
 
 const useExtractData = (): NewsData[] => {
   const { data, status } = useWebSocket("wss://news.treeofalpha.com/ws");
@@ -340,7 +336,7 @@ const checkSubmittedApi = async (
 
 export {
   useFetch,
-  useGetPosition,
+  // useGetPosition,
   useExtractData,
   formatDate,
   useGetPrice,

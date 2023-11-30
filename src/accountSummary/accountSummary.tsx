@@ -5,14 +5,15 @@ import {
   ValueColor,
   LabelColor,
 } from "./accountSummaryStyle";
+import { ErrorStyle } from "../loginPage/loginStyle";
 
 const AccountSummary = () => {
   const { data: accountSummary, error } = useFetch<AccountSummaryInterface>(
     String(process.env.REACT_APP_ACCOUNT),
-    10000000
+    10000
   );
 
-  if (error) return <p>Error: {error}</p>;
+  if (error) return <ErrorStyle>{error}</ErrorStyle>;
 
   return (
     <AccountSummaryStyle>

@@ -99,6 +99,11 @@ export interface ApiData {
   apiSecret?: string;
 }
 
+export interface BybitApiContextType {
+  bybitApi: ApiData;
+  updateApiKeys: (newKeys: ApiData) => void;
+}
+
 export interface SelectDropdown {
   closeModal?: () => void;
   onSelect: (api: "bybit" | "openai" | "") => void;

@@ -1,16 +1,29 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Button, Cell, Row, Table } from "./openPositionStyle";
-import { handleClick, useGetPosition } from "../utils/utils";
+import { handleClick, useFetch } from "../utils/utils";
 import { Positions } from "../utils/interface";
 import { useNavigate } from "react-router-dom";
+import { useApiKeys } from "../apiContext/apiContext";
+import { ErrorStyle } from "../loginPage/loginStyle";
 
 const TradeTable: React.FC<{
   addLogMessage: (message: string) => void;
 }> = ({ addLogMessage }) => {
-  const { data, error } = useGetPosition();
-  console.log("psoasda: ", data);
+  const { data, error, refetch } = useFetch<Positions[]>(
+    String(process.env.REACT_APP_POSITION),
+    10000
+  );
+  const { bybitApi } = useApiKeys();
+  // console.log("psoasda: ", data);
+  // console.log("tradetable: ", bybitApi);
 
-  if (error) return <p>Error: {error}</p>;
+  useEffect(() => {
+    console.log("triggering ");
+    refetch();
+  }, [refetch, bybitApi]);
+
+  console.log("error: ", error);
+  if (error) return <ErrorStyle>{error}</ErrorStyle>;
 
   const positions =
     data?.map(

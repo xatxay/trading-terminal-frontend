@@ -5,6 +5,7 @@ import "../apiInput/apiInput.css";
 import {
   ApiInput,
   ApiText,
+  ExistContainer,
   IconStyle,
   SavedApi,
   SubmitButton,
@@ -16,6 +17,7 @@ import { IoMdEye, IoMdEyeOff } from "react-icons/io";
 import { ApiData, ExistModal, SelectDropdown } from "../utils/interface";
 import DropdownMenu from "./dropdownMenu";
 import SubmitChatGptApi from "./chatgptApi";
+import { useApiKeys } from "../apiContext/apiContext";
 
 ReactModal.setAppElement("#root");
 
@@ -103,6 +105,7 @@ const APIModal: React.FC<{}> = () => {
 const SubmitApiComponet: React.FC<SelectDropdown> = ({ onSelect }) => {
   const [apiKey, setApiKey] = useState<string>("");
   const [apiSecret, setApiSecret] = useState<string>("");
+  const { updateApiKeys } = useApiKeys();
 
   const useApi = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -112,9 +115,12 @@ const SubmitApiComponet: React.FC<SelectDropdown> = ({ onSelect }) => {
     }
     const email = localStorage.getItem("email") || "";
     const response = await handleBybitApi(email, apiKey, apiSecret);
+    const { message } = await response?.json();
     console.log("submitting: ", response);
+    console.log("json: ", message);
     if (response && response.ok) {
-      toast.success("Updated API successful!");
+      updateApiKeys({ apiKey, apiSecret });
+      toast.success(message);
       setApiKey("");
       setApiSecret("");
       onSelect("");
@@ -125,27 +131,29 @@ const SubmitApiComponet: React.FC<SelectDropdown> = ({ onSelect }) => {
 
   return (
     <>
-      <ApiText>
-        Enter Your Bybit API
-        <DropdownMenu onSelect={onSelect} />
-      </ApiText>
-      <ApiInput
-        id="apiKey"
-        type="password"
-        placeholder="API KEY"
-        value={apiKey}
-        onChange={(e) => setApiKey(e.target.value)}
-        required
-      />
-      <ApiInput
-        id="apiSecret"
-        type="password"
-        placeholder="API SECRET"
-        value={apiSecret}
-        onChange={(e) => setApiSecret(e.target.value)}
-        required
-      />
-      <SubmitButton onClick={useApi}>Save</SubmitButton>
+      <ExistContainer onSubmit={useApi}>
+        <ApiText>
+          Enter Your Bybit API
+          <DropdownMenu onSelect={onSelect} />
+        </ApiText>
+        <ApiInput
+          id="apiKey"
+          type="password"
+          placeholder="API KEY"
+          value={apiKey}
+          onChange={(e) => setApiKey(e.target.value)}
+          required
+        />
+        <ApiInput
+          id="apiSecret"
+          type="password"
+          placeholder="API SECRET"
+          value={apiSecret}
+          onChange={(e) => setApiSecret(e.target.value)}
+          required
+        />
+        <SubmitButton type="submit">Save</SubmitButton>
+      </ExistContainer>
     </>
   );
 };
@@ -195,7 +203,7 @@ const ExistApiModal: React.FC<ExistModal> = ({
         <>
           <ApiText>Saved API</ApiText>
           <SavedApi>
-            API Key:{" "}
+            API Key:
             {!apiData || !apiData.apiKey
               ? "Please input your Bybit API in the setting"
               : apiData && showApiData
@@ -208,7 +216,7 @@ const ExistApiModal: React.FC<ExistModal> = ({
             />
           </SavedApi>
           <SavedApi>
-            API Secret:{" "}
+            API Secret:
             {!apiData || !apiData.apiSecret
               ? "Please input your Bybit API in the setting"
               : apiData && showApiData
