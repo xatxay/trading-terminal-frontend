@@ -10,8 +10,10 @@ import { ErrorStyle } from "../loginPage/loginStyle";
 const AccountSummary = () => {
   const { data: accountSummary, error } = useFetch<AccountSummaryInterface>(
     String(process.env.REACT_APP_ACCOUNT),
-    10000
+    50000
   );
+
+  console.log("data, error: ", accountSummary, error);
 
   if (error) return <ErrorStyle>{error}</ErrorStyle>;
 

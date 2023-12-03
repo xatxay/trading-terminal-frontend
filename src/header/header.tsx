@@ -4,6 +4,7 @@ import { Button, HeaderClass, ToggleContainer } from "./headerStyles";
 // import SwitchToggle from "./modeSwitch";
 import { useNavigate } from "react-router-dom";
 import APIModal from "../apiInput/apiInputModal";
+import PositionSizeSubmit from "../positionSize/positionSize";
 // import Logout from "../logout/logoutStyle";
 
 const Header: React.FC<{
@@ -30,6 +31,7 @@ const Header: React.FC<{
         Stop
       </Button>
       <ToggleContainer>
+        <PositionSizeSubmit />
         <APIModal />
         <Button onClick={() => handleLogout(setIsAuthenticated, navigate)}>
           Logout

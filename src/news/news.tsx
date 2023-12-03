@@ -35,8 +35,8 @@ const NewsButtons: React.FC<{
   const tradeInfo = {
     buy: "Buy",
     sell: "Sell",
-    twentyFive: "25",
-    seventyFive: "75",
+    firstPositionSize: localStorage.getItem("firstPositionSize") || 500,
+    secondPositionSize: localStorage.getItem("secondPositionSize") || 1000,
   };
   return (
     <ButtonContainer>
@@ -48,11 +48,11 @@ const NewsButtons: React.FC<{
             navigate,
             tradeInfo.sell,
             coin,
-            tradeInfo.seventyFive
+            tradeInfo.secondPositionSize
           )
         }
       >
-        $1000
+        {tradeInfo.secondPositionSize}
       </ButtonSize>
       <ButtonSize
         onClick={async () =>
@@ -62,11 +62,11 @@ const NewsButtons: React.FC<{
             navigate,
             tradeInfo.sell,
             coin,
-            tradeInfo.twentyFive
+            tradeInfo.firstPositionSize
           )
         }
       >
-        $500
+        {tradeInfo.firstPositionSize}
       </ButtonSize>
       <ButtonSize middle>
         {coin}{" "}
@@ -83,11 +83,11 @@ const NewsButtons: React.FC<{
             navigate,
             tradeInfo.buy,
             coin,
-            tradeInfo.twentyFive
+            tradeInfo.firstPositionSize
           )
         }
       >
-        $500
+        {tradeInfo.firstPositionSize}
       </ButtonSize>
       <ButtonSize
         primary
@@ -98,11 +98,11 @@ const NewsButtons: React.FC<{
             navigate,
             tradeInfo.buy,
             coin,
-            tradeInfo.seventyFive
+            tradeInfo.secondPositionSize
           )
         }
       >
-        $1000
+        {tradeInfo.secondPositionSize}
       </ButtonSize>
     </ButtonContainer>
   );

@@ -24,6 +24,7 @@ const useFetch = <T,>(
       };
 
       const response = await fetch(url, requestOptions);
+      console.log("fetching: ", response);
       if (response.status === 401) {
         localStorage.removeItem("token");
         navigate("/login");
@@ -34,6 +35,7 @@ const useFetch = <T,>(
         );
       }
       const jsonData = await response.json();
+      console.log("message: ", jsonData);
       setData(jsonData);
       setError("");
     } catch (err) {
@@ -152,9 +154,9 @@ const handleClick = async (
   navigate: ReturnType<typeof useNavigate>,
   side?: string,
   symbol?: string,
-  percentage?: string
+  positionSize?: string | number
 ) => {
-  console.log("sss: ", side, symbol, endpoint, percentage);
+  console.log("sss: ", side, symbol, endpoint, positionSize);
   try {
     const token = localStorage.getItem("token");
     const response = await fetch(
@@ -165,7 +167,7 @@ const handleClick = async (
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ side, symbol, percentage }),
+        body: JSON.stringify({ side, symbol, positionSize }),
       }
     );
     if (response.status === 401) {
@@ -254,6 +256,28 @@ const handleOpenAiApi = async (email: string, openAiApi: string) => {
   }
 };
 
+const handlePositionSize = async (
+  firstPositionSize: string,
+  secondPositionSize: string
+) => {
+  try {
+    localStorage.setItem("firstPositionSize", firstPositionSize);
+    localStorage.setItem("secondPositionSize", secondPositionSize);
+    // const token = localStorage.getItem("token");
+    // const response = await fetch(String(process.env.REACT_APP_POSITION_SIZE), {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //     Authorization: `Bearer ${token}`,
+    //   },
+    //   body: JSON.stringify({ email, firstPositionSize, secondPositionSize }),
+    // });
+    // return response;
+  } catch (err) {
+    console.error("Error submitting position size: ", err);
+  }
+};
+
 const useHandleRegister = async (
   email: string,
   password: string
@@ -333,7 +357,6 @@ const checkSubmittedApi = async (
 
 export {
   useFetch,
-  // useGetPosition,
   useExtractData,
   formatDate,
   useGetPrice,
@@ -345,4 +368,5 @@ export {
   handleBybitApi,
   checkSubmittedApi,
   handleOpenAiApi,
+  handlePositionSize,
 };
