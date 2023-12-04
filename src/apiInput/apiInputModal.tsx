@@ -205,7 +205,7 @@ const ExistApiModal: React.FC<ExistModal> = ({
             {!apiData || !apiData.apiKey
               ? "Please input your Bybit API in the setting"
               : apiData && showApiData
-              ? apiData?.apiKey
+              ? `   ${apiData?.apiKey}`
               : "••••••••••"}
             <Icons
               toggleApiView={toggleApiView}
@@ -218,7 +218,7 @@ const ExistApiModal: React.FC<ExistModal> = ({
             {!apiData || !apiData.apiSecret
               ? "Please input your Bybit API in the setting"
               : apiData && showApiData
-              ? apiData?.apiSecret
+              ? `   ${apiData?.apiSecret}`
               : "••••••••••"}
             <Icons
               toggleApiView={toggleApiView}

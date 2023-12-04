@@ -13,6 +13,8 @@ const TerminalLog: React.FC<{ messages: string[] }> = ({ messages }) => {
 
   return (
     <LogContainer ref={logAutoScroll}>
+      <div>Enter Your Bybit Api Key To Start Trading</div>
+      <div>Press Start To Use Chatgpt Mode</div>
       {messages.map((msg, index) => (
         <div key={index}>{msg}</div>
       ))}

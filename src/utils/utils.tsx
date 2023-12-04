@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { BackendData, NewsData, PriceData } from "./interface";
+import { BackendData, NewsData, PriceData, TerminalLog } from "./interface";
 import useWebSocket from "../newsHeadline/newsWebsocket";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
@@ -131,19 +131,34 @@ const formatDate = (timeMs?: number): string => {
   return timeFormatted;
 };
 
-const useGetPrice = (): PriceData => {
+const isTerminalLog = (data: any): data is TerminalLog => {
+  return (
+    data && typeof data.type === "string" && typeof data.message === "string"
+  );
+};
+
+const useGetPrice = (addLogMessage: (message: string) => void): PriceData => {
   const { data, status } = useWebSocket(String(process.env.REACT_APP_WS));
   const [tickerPercentage, setTickerPercentage] = useState<PriceData>({
     ticker: "",
     percentage: 0,
+    price: "",
   });
 
   useEffect(() => {
     if (!data) return;
-    const parseData = JSON.parse(data);
-    console.log("price: ", parseData);
-    setTickerPercentage(parseData);
-  }, [data, status]);
+    const parseData: PriceData | TerminalLog = JSON.parse(data);
+    if (isTerminalLog(parseData)) {
+      if (parseData.type === "log") {
+        console.log(parseData);
+        const logMessage = `${parseData.timeStamp} ${parseData.message}`;
+        addLogMessage(logMessage);
+      }
+    } else {
+      console.log("price: ", parseData);
+      setTickerPercentage(parseData);
+    }
+  }, [addLogMessage, data, status]);
 
   return tickerPercentage;
 };

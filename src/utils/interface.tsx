@@ -15,6 +15,12 @@ export interface ContainerProp {
   children?: React.ReactNode;
 }
 
+export interface TerminalLog {
+  type: string;
+  message: string;
+  timeStamp: string;
+}
+
 export interface Positions {
   symbol: string;
   leverage: string;
@@ -78,6 +84,7 @@ export interface DataStatus {
 export interface PriceData {
   ticker: string;
   percentage: number;
+  price: string;
 }
 
 export interface BackendData {

@@ -52,7 +52,7 @@ const NewsButtons: React.FC<{
           )
         }
       >
-        {tradeInfo.secondPositionSize}
+        ${tradeInfo.secondPositionSize}
       </ButtonSize>
       <ButtonSize
         onClick={async () =>
@@ -66,7 +66,7 @@ const NewsButtons: React.FC<{
           )
         }
       >
-        {tradeInfo.firstPositionSize}
+        ${tradeInfo.firstPositionSize}
       </ButtonSize>
       <ButtonSize middle>
         {coin}{" "}
@@ -87,7 +87,7 @@ const NewsButtons: React.FC<{
           )
         }
       >
-        {tradeInfo.firstPositionSize}
+        ${tradeInfo.firstPositionSize}
       </ButtonSize>
       <ButtonSize
         primary
@@ -102,7 +102,7 @@ const NewsButtons: React.FC<{
           )
         }
       >
-        {tradeInfo.secondPositionSize}
+        ${tradeInfo.secondPositionSize}
       </ButtonSize>
     </ButtonContainer>
   );
@@ -112,7 +112,7 @@ const NewsHeadline: React.FC<{ addLogMessage: (message: string) => void }> = ({
   addLogMessage,
 }) => {
   const messages = useExtractData();
-  const { ticker, percentage } = useGetPrice();
+  const { ticker, percentage } = useGetPrice(addLogMessage);
   const [tickerPercentage, setTickerPercentage] = useState<{
     [key: string]: number;
   }>({});
