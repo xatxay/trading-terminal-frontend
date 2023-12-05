@@ -7,6 +7,8 @@ const ApiInput = styled.input`
   border: none;
   border-radius: 5px;
   margin-bottom: 30px;
+  color: ${backgroundGray};
+  font-weight: bold;
   ::-webkit-input-placeholder {
     color: ${backgroundGray};
     font-weight: bold;

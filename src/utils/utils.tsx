@@ -24,7 +24,6 @@ const useFetch = <T,>(
       };
 
       const response = await fetch(url, requestOptions);
-      console.log("fetching: ", response);
       if (response.status === 401) {
         localStorage.removeItem("token");
         navigate("/login");
@@ -35,7 +34,7 @@ const useFetch = <T,>(
         );
       }
       const jsonData = await response.json();
-      console.log("message: ", jsonData);
+      // console.log("message: ", jsonData);
       setData(jsonData);
       setError("");
     } catch (err) {
@@ -144,21 +143,22 @@ const useGetPrice = (addLogMessage: (message: string) => void): PriceData => {
     percentage: 0,
     price: "",
   });
+  const [lastLogMessage, setLasLogMessage] = useState<string>("");
 
   useEffect(() => {
     if (!data) return;
     const parseData: PriceData | TerminalLog = JSON.parse(data);
     if (isTerminalLog(parseData)) {
-      if (parseData.type === "log") {
-        console.log(parseData);
-        const logMessage = `${parseData.timeStamp} ${parseData.message}`;
-        addLogMessage(logMessage);
+      if (parseData.type === "log" && parseData.message !== lastLogMessage) {
+        console.log("terminallog: ", parseData);
+        setLasLogMessage(parseData.message);
+        addLogMessage(parseData.message);
       }
     } else {
       console.log("price: ", parseData);
       setTickerPercentage(parseData);
     }
-  }, [addLogMessage, data, status]);
+  }, [addLogMessage, data, lastLogMessage, status]);
 
   return tickerPercentage;
 };
@@ -191,7 +191,7 @@ const handleClick = async (
     }
     const data = await response.json();
     addLogMessage(data.message);
-    console.log(data.message);
+    console.log("handleclick: ", data.message);
   } catch (err) {
     console.error("Error: ", err);
     addLogMessage(`Error: ${err}`);

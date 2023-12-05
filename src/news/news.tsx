@@ -23,6 +23,8 @@ import {
 import "../news/imageModal.css";
 import ReactModal from "react-modal";
 import { useNavigate } from "react-router-dom";
+import "../openPosition/chopper.css";
+import chopperNews from "../loginPage/chopperNews.png";
 
 ReactModal.setAppElement("#root");
 
@@ -139,6 +141,14 @@ const NewsHeadline: React.FC<{ addLogMessage: (message: string) => void }> = ({
   useEffect(() => {
     setTickerPercentage((prev) => ({ ...prev, [ticker]: percentage }));
   }, [ticker, percentage]);
+
+  if (messages.length === 0) {
+    return (
+      <div className="chopperNewsPos">
+        <img src={chopperNews} alt="chopper news" className="chopperNews" />
+      </div>
+    );
+  }
 
   return (
     <div>

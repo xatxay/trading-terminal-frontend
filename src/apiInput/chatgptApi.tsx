@@ -26,7 +26,8 @@ const SubmitChatGptApi: React.FC<SelectDropdown> = ({ onSelect }) => {
       setOpenAiApi("");
       onSelect("");
     } else {
-      toast.error("Error saving api key");
+      const { message } = await response?.json();
+      toast.error(message);
     }
     console.log("openai response: ", response);
   };

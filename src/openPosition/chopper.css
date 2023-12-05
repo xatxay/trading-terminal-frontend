@@ -1,0 +1,24 @@
+.chopperPos {
+  height: 50vh;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.chopper {
+  width: 300px;
+  height: auto;
+}
+
+.chopperNews {
+  width: 300px;
+  height: auto;
+}
+
+.chopperNewsPos {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

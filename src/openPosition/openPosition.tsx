@@ -5,13 +5,15 @@ import { Positions } from "../utils/interface";
 import { useNavigate } from "react-router-dom";
 import { useApiKeys } from "../apiContext/apiContext";
 import { ErrorStyle } from "../loginPage/loginStyle";
+import chopper from "../loginPage/chopper.png";
+import "./chopper.css";
 
 const TradeTable: React.FC<{
   addLogMessage: (message: string) => void;
 }> = ({ addLogMessage }) => {
   const { data, error, refetch } = useFetch<Positions[]>(
     String(process.env.REACT_APP_POSITION),
-    5000
+    500000
   );
   const { bybitApi } = useApiKeys();
   console.log("position: ", data);
@@ -19,6 +21,13 @@ const TradeTable: React.FC<{
   useEffect(() => {
     refetch();
   }, [refetch, bybitApi]);
+
+  if (!data || !Array.isArray(data))
+    return (
+      <div className="chopperPos">
+        <img src={chopper} alt="chopper" className="chopper" />
+      </div>
+    );
 
   if (error) return <ErrorStyle>{error}</ErrorStyle>;
 
