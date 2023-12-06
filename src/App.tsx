@@ -41,6 +41,7 @@ function App() {
             pauseOnHover
             closeOnClick
             closeButton
+            theme="dark"
           />
           <Routes>
             <Route

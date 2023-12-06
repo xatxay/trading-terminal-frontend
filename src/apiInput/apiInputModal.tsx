@@ -1,5 +1,5 @@
 import ReactModal from "react-modal";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { IoSettingsOutline } from "react-icons/io5";
 import "../apiInput/apiInput.css";
 import {
@@ -23,8 +23,8 @@ ReactModal.setAppElement("#root");
 
 const APIModal: React.FC<{}> = () => {
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
-  const [apiDataExists, setApiDataExists] = useState<boolean>(false);
-  const [openaiDataExist, setOpenaiDataExist] = useState<boolean>(false);
+  const [apiDataExists, setApiDataExists] = useState<ApiData>({});
+  const [openaiDataExist, setOpenaiDataExist] = useState<string>("");
   const [selectedApi, setSelectedApi] = useState<"bybit" | "openai" | "">("");
   const [isEditting, setIsEditting] = useState<boolean>(false);
   const [isEdittingOpenAi, setIsEdittingOpenAi] = useState<boolean>(false);
@@ -33,6 +33,8 @@ const APIModal: React.FC<{}> = () => {
   const openModal = async () => {
     setModalIsOpen(true);
     setSelectedApi("");
+    setIsEditting(false);
+    setIsEdittingOpenAi(false);
     const isExist = await checkSubmittedApi(
       email || "",
       process.env.REACT_APP_USERAPICHECK || ""
@@ -41,12 +43,16 @@ const APIModal: React.FC<{}> = () => {
       email || "",
       process.env.REACT_APP_USER_OPENAI_API_CHECK || ""
     );
-    setApiDataExists(isExist);
-    setOpenaiDataExist(openAiExist);
+    if (isExist.apiKey && isExist.apiSecret) setApiDataExists(isExist);
+    if (openAiExist.openAi) setOpenaiDataExist(openAiExist.openAi);
   };
 
   const closeModal = () => {
     setModalIsOpen(false);
+    setSelectedApi("");
+    setIsEditting(false);
+    setIsEdittingOpenAi(false);
+    // console.log("isexisting: ", apiDataExists, openaiDataExist);
   };
 
   const handleApiSelection = (api: "bybit" | "openai" | "") => {
@@ -84,7 +90,9 @@ const APIModal: React.FC<{}> = () => {
           <SubmitApiComponet onSelect={handleApiSelection} />
         ) : selectedApi === "openai" ? (
           <SubmitChatGptApi onSelect={handleApiSelection} />
-        ) : apiDataExists || openaiDataExist ? (
+        ) : apiDataExists.apiKey ||
+          apiDataExists.apiSecret ||
+          openaiDataExist ? (
           <ExistApiModal
             closeModal={closeModal}
             onSelect={handleApiSelection}
@@ -92,6 +100,8 @@ const APIModal: React.FC<{}> = () => {
             isEdittingOpenAi={isEdittingOpenAi}
             toggleIsEditting={toggleEditButton}
             toggleIsEdittingOpenAi={toggleOpenAiEditButton}
+            apiDataExists={apiDataExists}
+            openaiDataExist={openaiDataExist}
           />
         ) : (
           <SubmitApiComponet onSelect={handleApiSelection} />
@@ -124,7 +134,7 @@ const SubmitApiComponet: React.FC<SelectDropdown> = ({ onSelect }) => {
       setApiSecret("");
       onSelect("");
     } else {
-      toast.error("Failed updating API");
+      toast.error(message);
     }
   };
 
@@ -164,28 +174,13 @@ const ExistApiModal: React.FC<ExistModal> = ({
   isEdittingOpenAi,
   toggleIsEditting,
   toggleIsEdittingOpenAi,
+  apiDataExists,
+  openaiDataExist,
 }) => {
-  const [apiData, setApiData] = useState<ApiData>({});
-  const [openAiData, setOpenAiData] = useState<string>("");
   const [showOpenAiData, setShowOpenAiData] = useState<boolean>(false);
   const [showApiData, setShowApiData] = useState<boolean>(false);
 
-  useEffect(() => {
-    const fetchApiData = async () => {
-      const email = localStorage.getItem("email");
-      const data = await checkSubmittedApi(
-        email || "",
-        process.env.REACT_APP_USERAPICHECK || ""
-      );
-      const dataOpenAi = await checkSubmittedApi(
-        email || "",
-        process.env.REACT_APP_USER_OPENAI_API_CHECK || ""
-      );
-      if (dataOpenAi) setOpenAiData(dataOpenAi.openAi);
-      if (data) setApiData(data);
-    };
-    fetchApiData();
-  }, []);
+  console.log("existmodal: ", apiDataExists, openaiDataExist);
 
   const toggleApiView = () => {
     setShowApiData(!showApiData);
@@ -202,10 +197,10 @@ const ExistApiModal: React.FC<ExistModal> = ({
           <ApiText>Saved API</ApiText>
           <SavedApi>
             API Key:
-            {!apiData || !apiData.apiKey
+            {!apiDataExists?.apiSecret || !apiDataExists.apiKey
               ? "Please input your Bybit API in the setting"
-              : apiData && showApiData
-              ? `   ${apiData?.apiKey}`
+              : apiDataExists.apiKey && showApiData
+              ? `   ${apiDataExists?.apiKey}`
               : "••••••••••"}
             <Icons
               toggleApiView={toggleApiView}
@@ -215,10 +210,10 @@ const ExistApiModal: React.FC<ExistModal> = ({
           </SavedApi>
           <SavedApi>
             API Secret:
-            {!apiData || !apiData.apiSecret
+            {!apiDataExists?.apiKey || !apiDataExists.apiSecret
               ? "Please input your Bybit API in the setting"
-              : apiData && showApiData
-              ? `   ${apiData?.apiSecret}`
+              : apiDataExists.apiSecret && showApiData
+              ? `   ${apiDataExists?.apiSecret}`
               : "••••••••••"}
             <Icons
               toggleApiView={toggleApiView}
@@ -228,10 +223,10 @@ const ExistApiModal: React.FC<ExistModal> = ({
           </SavedApi>
           <SavedApi>
             OpenAI API:{" "}
-            {!openAiData
+            {!openaiDataExist
               ? "Please input your OpenAi API in the setting"
-              : openAiData && showOpenAiData
-              ? openAiData
+              : openaiDataExist && showOpenAiData
+              ? openaiDataExist
               : "••••••••••"}
             <Icons
               toggleApiView={() => setShowOpenAiData(!showOpenAiData)}

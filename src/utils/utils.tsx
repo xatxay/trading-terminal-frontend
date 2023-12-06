@@ -1,5 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
-import { BackendData, NewsData, PriceData, TerminalLog } from "./interface";
+import {
+  ApiData,
+  BackendData,
+  NewsData,
+  PriceData,
+  TerminalLog,
+} from "./interface";
 import useWebSocket from "../newsHeadline/newsWebsocket";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
@@ -245,6 +251,7 @@ const handleBybitApi = async (
       },
       body: JSON.stringify({ email, apiKey, apiSecret }),
     });
+    // console.log("handle: ", response);
     return response;
   } catch (err) {
     console.log("Error submitting bybit api: ", err);
@@ -348,7 +355,7 @@ const useAutoLogout = (
 const checkSubmittedApi = async (
   email: string,
   endpoint: string
-): Promise<any> => {
+): Promise<ApiData> => {
   try {
     const token = localStorage.getItem("token");
     const response = await fetch(String(endpoint), {
@@ -359,14 +366,16 @@ const checkSubmittedApi = async (
       },
       body: JSON.stringify({ email }),
     });
+    // console.log("check: ", response);
+    const message = await response.json();
+    console.log("check submitted api ", message);
     if (!response.ok) {
-      throw new Error("Please enter your api key in the settings");
+      throw new Error("Please enter your api key in the settings"); //check this api input modal
     }
-    const data = await response.json();
-    console.log("check submitted api ");
-    return data;
+    return message;
   } catch (err) {
     console.log("Failed checking user submitted API: ", err);
+    throw err;
   }
 };
 

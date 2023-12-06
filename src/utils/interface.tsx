@@ -104,6 +104,7 @@ export interface RequestOptions {
 export interface ApiData {
   apiKey?: string;
   apiSecret?: string;
+  openAi?: string;
 }
 
 export interface BybitApiContextType {
@@ -121,4 +122,6 @@ export interface ExistModal extends SelectDropdown {
   isEdittingOpenAi: boolean;
   toggleIsEditting: () => void;
   toggleIsEdittingOpenAi: () => void;
+  apiDataExists?: ApiData;
+  openaiDataExist?: string;
 }
