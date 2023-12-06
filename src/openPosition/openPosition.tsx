@@ -13,7 +13,7 @@ const TradeTable: React.FC<{
 }> = ({ addLogMessage }) => {
   const { data, error, refetch } = useFetch<Positions[]>(
     String(process.env.REACT_APP_POSITION),
-    500000
+    1000
   );
   const { bybitApi } = useApiKeys();
   console.log("position: ", data);

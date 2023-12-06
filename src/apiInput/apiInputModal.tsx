@@ -43,8 +43,10 @@ const APIModal: React.FC<{}> = () => {
       email || "",
       process.env.REACT_APP_USER_OPENAI_API_CHECK || ""
     );
-    if (isExist.apiKey && isExist.apiSecret) setApiDataExists(isExist);
-    if (openAiExist.openAi) setOpenaiDataExist(openAiExist.openAi);
+    if (isExist && isExist.apiKey && isExist.apiSecret)
+      setApiDataExists(isExist);
+    if (openAiExist && openAiExist.openAi)
+      setOpenaiDataExist(openAiExist.openAi);
   };
 
   const closeModal = () => {

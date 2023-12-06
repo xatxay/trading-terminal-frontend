@@ -355,7 +355,7 @@ const useAutoLogout = (
 const checkSubmittedApi = async (
   email: string,
   endpoint: string
-): Promise<ApiData> => {
+): Promise<ApiData|undefined> => {
   try {
     const token = localStorage.getItem("token");
     const response = await fetch(String(endpoint), {
@@ -369,13 +369,13 @@ const checkSubmittedApi = async (
     // console.log("check: ", response);
     const message = await response.json();
     console.log("check submitted api ", message);
-    if (!response.ok) {
-      throw new Error("Please enter your api key in the settings"); //check this api input modal
-    }
+    // if (!response.ok) {
+    //   throw new Error("Please enter your api key in the settings"); //check this api input modal
+    // }
     return message;
   } catch (err) {
     console.log("Failed checking user submitted API: ", err);
-    throw err;
+    // throw err;
   }
 };
 
