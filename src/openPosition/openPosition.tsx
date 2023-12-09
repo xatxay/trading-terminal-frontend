@@ -16,7 +16,7 @@ const TradeTable: React.FC<{
     1000
   );
   const { bybitApi } = useApiKeys();
-  console.log("position: ", data);
+  console.log("position fetch: ", data);
 
   useEffect(() => {
     refetch();

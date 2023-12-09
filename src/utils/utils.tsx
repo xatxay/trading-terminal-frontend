@@ -63,10 +63,6 @@ const useFetch = <T,>(
   return { data, error, refetch: fetchData };
 };
 
-// const useGetPosition = () => {
-//   return useFetch<Positions[]>(String(process.env.REACT_APP_POSITION), 10000);
-// };
-
 const useExtractData = (): NewsData[] => {
   const { data, status } = useWebSocket("wss://news.treeofalpha.com/ws");
   const [messages, setMessages] = useState<NewsData[]>([]);
@@ -143,7 +139,7 @@ const isTerminalLog = (data: any): data is TerminalLog => {
 };
 
 const useGetPrice = (addLogMessage: (message: string) => void): PriceData => {
-  const { data, status } = useWebSocket(String(process.env.REACT_APP_WS));
+  const { data, status } = useWebSocket(String(process.env.REACT_APP_KLINE_WS));
   const [tickerPercentage, setTickerPercentage] = useState<PriceData>({
     ticker: "",
     percentage: 0,
@@ -169,6 +165,14 @@ const useGetPrice = (addLogMessage: (message: string) => void): PriceData => {
   return tickerPercentage;
 };
 
+const useGetPosition = () => {
+  const { data, status } = useWebSocket(
+    String(process.env.REACT_APP_POSITIONS_WS)
+  );
+  console.log("position data: ", data);
+  console.log("position ws status: ", status);
+};
+
 const handleClick = async (
   endpoint: string,
   addLogMessage: (message: string) => void,
@@ -180,6 +184,9 @@ const handleClick = async (
   console.log("sss: ", side, symbol, endpoint, positionSize);
   try {
     const token = localStorage.getItem("token");
+    side = "Buy";
+    symbol = "BTCUSDT";
+    positionSize = 500;
     const response = await fetch(
       `${String(process.env.REACT_APP_URL)}${endpoint}`,
       {
@@ -188,6 +195,7 @@ const handleClick = async (
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
+        // body: JSON.stringify({ side, symbol, positionSize }),
         body: JSON.stringify({ side, symbol, positionSize }),
       }
     );
@@ -355,7 +363,7 @@ const useAutoLogout = (
 const checkSubmittedApi = async (
   email: string,
   endpoint: string
-): Promise<ApiData|undefined> => {
+): Promise<ApiData | undefined> => {
   try {
     const token = localStorage.getItem("token");
     const response = await fetch(String(endpoint), {
@@ -393,4 +401,5 @@ export {
   checkSubmittedApi,
   handleOpenAiApi,
   handlePositionSize,
+  useGetPosition,
 };
