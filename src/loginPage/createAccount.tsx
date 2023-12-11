@@ -77,7 +77,9 @@ const CreateAccountForm: React.FC<{}> = () => {
           onChange={(e) => setPassword(e.target.value)}
         />
         <CreateAccountContainer>
-          <Button type="submit">Register</Button>
+          <Button type="submit">
+            <span>Register</span>
+          </Button>
           <CreateAccount onClick={redirectToLogin}>Login</CreateAccount>
         </CreateAccountContainer>
       </LoginFormStyled>

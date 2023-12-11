@@ -109,7 +109,7 @@ const useExtractData = (): NewsData[] => {
 
       setMessages((prevMessage) => {
         const newMessages = [newsData, ...prevMessage];
-        if (newMessages.length > 15) {
+        if (newMessages.length > 10) {
           newMessages.pop();
         }
         return newMessages;

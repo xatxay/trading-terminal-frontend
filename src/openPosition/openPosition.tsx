@@ -22,12 +22,7 @@ const TradeTable: React.FC<{
     refetch();
   }, [refetch, bybitApi]);
 
-  if (!data || !Array.isArray(data))
-    return (
-      <div className="chopperPos">
-        <img src={chopper} alt="chopper" className="chopper" />
-      </div>
-    );
+  if (!data || !Array.isArray(data)) return <></>;
 
   if (error) return <ErrorStyle>{error}</ErrorStyle>;
 
@@ -119,7 +114,7 @@ const TradeRow: React.FC<{
             )
           }
         >
-          Close
+          <span>Close</span>
         </Button>
       </Cell>
     </Row>

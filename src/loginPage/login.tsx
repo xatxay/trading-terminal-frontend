@@ -9,6 +9,7 @@ import {
   CreateAccountContainer,
   CreateAccount,
   Header,
+  MotionDiv,
 } from "./loginStyle";
 import wassie from "../loginPage/wassie-removebg-preview.png";
 import React, { useState } from "react";
@@ -21,8 +22,14 @@ const Login: React.FC<{
   return (
     <>
       <LoginContainer>
-        <LoginFormComponent setIsAuthenticated={setIsAuthenticated} />
-        <ImageLogin src={wassie} alt="Wassie" />
+        <MotionDiv
+          initial={{ opacity: 0, scale: 0.5 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, delay: 0.5, ease: [0, 0.71, 0.2, 1.01] }}
+        >
+          <LoginFormComponent setIsAuthenticated={setIsAuthenticated} />
+          <ImageLogin src={wassie} alt="Wassie" />
+        </MotionDiv>
       </LoginContainer>
     </>
   );
@@ -78,7 +85,9 @@ const LoginFormComponent: React.FC<{
           onChange={(e) => setPassword(e.target.value)}
         />
         <CreateAccountContainer>
-          <Button type="submit">Login</Button>
+          <Button type="submit">
+            <span>Login</span>
+          </Button>
           <CreateAccount onClick={redirectToRegister}>
             Create an account
           </CreateAccount>

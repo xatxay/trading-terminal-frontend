@@ -50,8 +50,30 @@ const Button = styled.button`
   border-radius: 5px;
   font-weight: bold;
   cursor: pointer;
-  &:hover {
+  position: relative;
+  overflow: hidden;
+
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
     background-color: ${orange};
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: 0.5s ease;
+    z-index: 0;
+  }
+
+  &:hover::after {
+    transform: scaleX(1);
+  }
+
+  span {
+    position: relative;
+    z-index: 1;
   }
 `;
 
