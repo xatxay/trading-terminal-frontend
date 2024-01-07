@@ -19,10 +19,10 @@ import globalScrollbarStyle from "./scrollbar/scrollbar";
 
 function App() {
   const [logMessages, setLogMessages] = useState<string[]>([]);
-  // const [isAuthenticated, setIsAuthenticated] = useState<boolean>(
-  //   !!localStorage.getItem("token")
-  // );
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(true);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(
+    !!localStorage.getItem("token")
+  );
+  // const [isAuthenticated, setIsAuthenticated] = useState<boolean>(true);
 
   const addLogMessage = (message: string) => {
     const messageTimestampt = `${formatDate()} ${message}`;
