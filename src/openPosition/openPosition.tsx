@@ -5,7 +5,6 @@ import { Positions } from "../utils/interface";
 import { useNavigate } from "react-router-dom";
 import { useApiKeys } from "../apiContext/apiContext";
 import { ErrorStyle } from "../loginPage/loginStyle";
-import chopper from "../loginPage/chopper.png";
 import "./chopper.css";
 
 const TradeTable: React.FC<{
